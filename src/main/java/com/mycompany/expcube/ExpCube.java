@@ -7,6 +7,7 @@ package com.mycompany.expcube;
 
 import java.util.List;
 import java.util.ArrayList;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -144,7 +145,7 @@ public class ExpCube extends JavaPlugin implements Listener {
         Player player = event.getPlayer();
         Action action = event.getAction();
         
-        ItemStack item = player.getItemInHand();
+        ItemStack item = player.getInventory().getItemInMainHand();
         ItemStack item2 = new ItemStack( item ); // 複数スタックの退避用
 
         if ( item.getType() == Material.QUARTZ_BLOCK ) {
@@ -153,7 +154,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                     
                     if ( player.isSneaking() ) {
                         event.setCancelled(true);
-                        player.setItemInHand( null );
+                        player.getInventory().setItemInMainHand( null );
                         
                         int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
@@ -214,9 +215,26 @@ public class ExpCube extends JavaPlugin implements Listener {
                                         ExperienceOrb exp = (ExperienceOrb) loc.getBlock().getWorld().spawn( loc.getBlock().getLocation().add( 0, 0, 0 ), ExperienceOrb.class );
                                         exp.setExperience( 100 );
                                     } else {
+                                        int BackExp = 100;
+
+                                        //  オフハンドに修繕するアイテムがあるかチェックするとこ
+                                        ItemStack offHand = player.getInventory().getItemInOffHand();
+                                        if ( offHand.getAmount()>0 ) {
+                                            if ( offHand.getItemMeta().getEnchantLevel( Enchantment.MENDING ) > 0 ) {
+                                                short dmg = offHand.getDurability();
+                                                if ( dmg>0 ) {
+                                                    Bukkit.getServer().getConsoleSender().sendMessage( ChatColor.LIGHT_PURPLE + "Mending is " + dmg );
+                                                    /*
+                                                    修繕付きアイテムだし、ダメージあるようだから、ここで回復作業を行う
+                                                    
+                                                    itemstack.setDamage(itemstack.getDamage() - i);
+                                                    */
+                                                }
+                                            }
+                                        }
                                         //  従来のEｘｐ直接反映方式
                                         //  "修繕"への対応は別途しなければならない
-                                        player.giveExp( 100 );
+                                        player.giveExp( BackExp );
                                     }
 
                                 } else {
@@ -232,7 +250,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         Debug( player.getName() + " Have Amount is [" + amount + "]", 2 );
                         // player.setItemInHand( null );
                         item.setAmount( 1 );    // １スタックに強制設定
-                        player.setItemInHand( ItemToInventory( item, ench ) );
+                        player.getInventory().setItemInMainHand( ItemToInventory( item, ench ) );
 
                         if ( amount>1 ) {
                             item2.setAmount( --amount );               // スタック数を-1セット
