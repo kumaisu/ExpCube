@@ -1,0 +1,40 @@
+name: ExpCube
+version: 0.0.1
+main: com.mycompany.expcube.ExpCube
+description: Exp Cube plugin
+author: Kumaisu
+database: true
+commands:
+    cubeget:
+        description: Give ExpCube Item
+        aliases: cg
+        permission: ExpCube.cubeget
+        permission-message: You do not have permission.
+        usage: /<command>
+    ExpCube:
+        description: Admin Command
+        permission: ExpCube.admin
+        permission-message: You do not have permission.
+        usage: /<command>
+    ExpCube reload:
+        description: Config file reload
+        permission: ExpCube.admin
+        permission-message: You do not have permission.
+        usage: /<command>
+    ExpCube status:
+        description: Reading Config Status Print
+        permission: ExpCube.admin
+        permission-message: You do not have permission.
+        usage: /<command>
+    ExpCube mode:
+        description: Chane ExpOrb Mode
+        permission: ExpCube.admin
+        permission-message: You do not have permission.
+        usage: /<command>
+permissions:
+    ExpCube.set:
+        description: Exp to Cube Motion Flag
+        default: op
+    ExpCube.get:
+        description: Exp from Cube Motion Flag
+        default: op
