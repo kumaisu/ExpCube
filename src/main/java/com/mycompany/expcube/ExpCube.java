@@ -38,24 +38,24 @@ public class ExpCube extends JavaPlugin implements Listener {
     // 0:none 1:normal 2:full
     public void Debug( String msg, int lvl ) {
         Boolean prtf;
-        String LogMsg = msg;
+        String LogMsg = ChatColor.WHITE + msg;
         switch ( config.getDebug() ) {
             case 0:
                 prtf = ( lvl == 0 );
                 break;
             case 1:
-                LogMsg = "(DB:n) " + msg;
+                LogMsg = ChatColor.YELLOW + "(DB:n) " + ChatColor.WHITE + msg;;
                 prtf = ( lvl == 1 );
                 break;
             case 2:
-                LogMsg = "(DB:f) " + msg;
+                LogMsg = ChatColor.YELLOW + "(DB:f) " + ChatColor.WHITE + msg;
                 prtf = true;
                 break;
             default:
                 prtf = false;
         }
         if ( prtf ) {
-            this.getLogger().info( LogMsg );
+            Bukkit.getServer().getConsoleSender().sendMessage( LogMsg );
         }
     }
 
@@ -210,11 +210,13 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                                     if ( config.getOrbMode() ) {
                                         //  従来は直接EXPに反映していたが、"修繕"への影響を加味し
-                                        //  経験値100のExpOrbをドロップする形式に変更
+                                        //  経験値100のExpOrbをドロップする形式
                                         Location loc = player.getLocation();
                                         ExperienceOrb exp = (ExperienceOrb) loc.getBlock().getWorld().spawn( loc.getBlock().getLocation().add( 0, 0, 0 ), ExperienceOrb.class );
                                         exp.setExperience( 100 );
                                     } else {
+                                        //  従来のEｘｐ直接反映方式
+                                        //  オフハンドに修繕アイテムがある場合の処理を追加して対応
                                         int BackExp = 100;
 
                                         //  オフハンドに修繕するアイテムがあるかチェックするとこ
@@ -230,13 +232,11 @@ public class ExpCube extends JavaPlugin implements Listener {
                                                         BackExp -= dmg;
                                                         dmg = 0;
                                                     }
-                                                    Debug( player.getName() + " Repair Item (" + dmg + ") to Exp(" + BackExp + ")", 1 );
+                                                    Debug( player.getName() + ChatColor.AQUA + " Repair Item (" + dmg + ") to Exp(" + BackExp + ")", 1 );
                                                     offHand.setDurability( (short) dmg );
                                                 }
                                             }
                                         }
-                                        //  従来のEｘｐ直接反映方式
-                                        //  "修繕"への対応は別途しなければならない
                                         player.giveExp( BackExp );
                                     }
 
