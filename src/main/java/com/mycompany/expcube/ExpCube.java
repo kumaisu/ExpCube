@@ -223,12 +223,15 @@ public class ExpCube extends JavaPlugin implements Listener {
                                             if ( offHand.getItemMeta().getEnchantLevel( Enchantment.MENDING ) > 0 ) {
                                                 short dmg = offHand.getDurability();
                                                 if ( dmg>0 ) {
-                                                    Bukkit.getServer().getConsoleSender().sendMessage( ChatColor.LIGHT_PURPLE + "Mending is " + dmg );
-                                                    /*
-                                                    修繕付きアイテムだし、ダメージあるようだから、ここで回復作業を行う
-                                                    
-                                                    itemstack.setDamage(itemstack.getDamage() - i);
-                                                    */
+                                                    if ( dmg>BackExp ) {
+                                                        dmg -= BackExp;
+                                                        BackExp = 0;
+                                                    } else {
+                                                        BackExp -= dmg;
+                                                        dmg = 0;
+                                                    }
+                                                    Debug( player.getName() + " Repair Item (" + dmg + ") to Exp(" + BackExp + ")", 1 );
+                                                    offHand.setDurability( (short) dmg );
                                                 }
                                             }
                                         }
