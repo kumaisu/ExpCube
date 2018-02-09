@@ -158,7 +158,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         
                         int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
-                        Debug( player.getName() + " Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
+                        Debug( player.getName() + " Befor Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
 
                         // if( action.equals( Action.RIGHT_CLICK_AIR ) || action.equals( Action.RIGHT_CLICK_BLOCK ) ) {
                         if( action.equals( Action.RIGHT_CLICK_AIR ) ) {
@@ -167,10 +167,12 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     if ( player.getTotalExperience()>99 ) {
                                         ench++;
 
+                                        int OldExp = player.getTotalExperience();
                                         int totalExp = player.getTotalExperience() - 100;
                                         player.setTotalExperience( totalExp );
                                         player.sendMessage( config.getExpToCube() + "(" + ( ench*100 ) +  "/1000)" );
-                                        Debug( player.getName() + " Right Click Cube(" + ench + ") Exp(" + totalExp + ")", 1 );
+                                        Debug( player.getName() + " Right Click Cube(" + ench + ") Exp(" + OldExp + " => " + totalExp + ")", 1 );
+                                        Debug( player.getName() + " After Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
 
                                         player.setLevel( 0 );
                                         player.setExp( 0 );
