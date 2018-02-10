@@ -32,6 +32,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ExpCube extends JavaPlugin implements Listener {
 
     private Config config;
+    static private int MiniExp = 100;
+    static private int MaxExp = 1000;
 
     // 0:none 1:normal 2:full
     public void Debug( String msg, int lvl ) {
@@ -96,7 +98,7 @@ public class ExpCube extends JavaPlugin implements Listener {
             for ( int i=0; i<10; i++) { MSG += ( i<ench ) ? "§a§l■" : "§f§l□" ; }
             MSG += "§f]";
             lores.add( MSG );
-            MSG = String.format( "§f[EXP] %4d/1000", ench*100 );
+            MSG = String.format( "§f[EXP] %4d/%4d", ench*100, MaxExp );
             lores.add( MSG );
         } else {
             MSG = "§eスニーク§fしながら";
@@ -138,6 +140,19 @@ public class ExpCube extends JavaPlugin implements Listener {
         }
     }
 
+    public void setNewLevel( Player p ) {
+        p.setLevel( 0 );
+        p.setExp( 0 );
+        int TotalExp = p.getTotalExperience();
+        for( ;TotalExp > p.getExpToLevel(); )
+        {
+            TotalExp -= p.getExpToLevel();
+            p.setLevel( p.getLevel() + 1 );
+        }
+        float xp = (float)TotalExp / (float)p.getExpToLevel();
+        p.setExp(xp);                                        
+    }
+
     @EventHandler
     public void Click(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -162,25 +177,16 @@ public class ExpCube extends JavaPlugin implements Listener {
                         if( action.equals( Action.RIGHT_CLICK_AIR ) ) {
                             if ( player.hasPermission( "ExpCube.set" ) ) {
                                 if ( ench<10 ) {
-                                    if ( player.getTotalExperience()>99 ) {
+                                    if ( MiniExp<player.getTotalExperience() ) {
                                         ench++;
 
                                         int OldExp = player.getTotalExperience();
-                                        int totalExp = player.getTotalExperience() - 100;
-                                        player.setTotalExperience( totalExp );
-                                        player.sendMessage( config.getExpToCube() + "(" + ( ench*100 ) +  "/1000)" );
-                                        Debug( player.getName() + " Right Click Cube(" + ench + ") Exp(" + OldExp + " => " + totalExp + ")", 1 );
-                                        Debug( player.getName() + " After Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
+                                        // int totalExp = player.getTotalExperience() - MiniExp;
+                                        player.setTotalExperience( player.getTotalExperience() - MiniExp );
+                                        player.sendMessage( config.getExpToCube() + "(" + ( ench*MiniExp ) +  "/" + MaxExp + ")" );
+                                        Debug( player.getName() + " Right Click Cube(" + ench + ") Exp(" + OldExp + " => " + player.getTotalExperience() + ")", 1 );
 
-                                        player.setLevel( 0 );
-                                        player.setExp( 0 );
-                                        for( ;totalExp > player.getExpToLevel(); )
-                                        {
-                                            totalExp -= player.getExpToLevel();
-                                            player.setLevel( player.getLevel() + 1 );
-                                        }
-                                        float xp = (float)totalExp / (float)player.getExpToLevel();
-                                        player.setExp(xp);                                        
+                                        setNewLevel( player );
                                         
                                     } else {
                                         if ( config.getNoEnough().equals( "" ) ) {
@@ -205,7 +211,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                 if ( ench>0 ) {
                                     ench--;
 
-                                    player.sendMessage( config.getExpFromCube() + "(" + ( ench*100 ) +  "/1000)" );
+                                    player.sendMessage( config.getExpFromCube() + "(" + ( ench*MiniExp ) +  "/" + MaxExp + ")" );
                                     Debug( player.getName() + " Left Click Cube(" + ench + ") Exp(" + player.getTotalExperience() + ")", 1 );
 
                                     if ( config.getOrbMode() ) {
@@ -213,11 +219,11 @@ public class ExpCube extends JavaPlugin implements Listener {
                                         //  経験値100のExpOrbをドロップする形式
                                         Location loc = player.getLocation();
                                         ExperienceOrb exp = (ExperienceOrb) loc.getBlock().getWorld().spawn( loc.getBlock().getLocation().add( 0, 0, 0 ), ExperienceOrb.class );
-                                        exp.setExperience( 100 );
+                                        exp.setExperience( MiniExp );
                                     } else {
                                         //  従来のEｘｐ直接反映方式
                                         //  オフハンドに修繕アイテムがある場合の処理を追加して対応
-                                        int BackExp = 100;
+                                        int BackExp = MiniExp;
 
                                         //  オフハンドに修繕するアイテムがあるかチェックするとこ
                                         ItemStack offHand = player.getInventory().getItemInOffHand();
@@ -237,7 +243,9 @@ public class ExpCube extends JavaPlugin implements Listener {
                                                 }
                                             }
                                         }
-                                        player.giveExp( BackExp );
+                                        //  player.giveExp( BackExp );
+                                        player.setTotalExperience( player.getTotalExperience() + BackExp );
+                                        setNewLevel( player );
                                     }
 
                                 } else {
@@ -248,6 +256,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                 player.sendMessage( ChatColor.RED + "You do not have permission" );
                             }
                         }
+                        Debug( player.getName() + " After Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
 
                         int amount = item.getAmount();
                         Debug( player.getName() + " Have Amount is [" + amount + "]", 2 );
