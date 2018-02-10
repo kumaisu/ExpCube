@@ -32,8 +32,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class ExpCube extends JavaPlugin implements Listener {
 
     private Config config;
-    static private int MiniExp = 100;
-    static private int MaxExp = 1000;
+    final private int MiniExp = 100;
+    final private int MaxExp = 1000;
 
     // 0:none 1:normal 2:full
     public void Debug( String msg, int lvl ) {
