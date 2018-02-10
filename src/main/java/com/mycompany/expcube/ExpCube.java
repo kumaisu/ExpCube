@@ -44,7 +44,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                 prtf = ( lvl == 0 );
                 break;
             case 1:
-                LogMsg = ChatColor.YELLOW + "(DB:n) " + ChatColor.WHITE + msg;;
+                LogMsg = ChatColor.YELLOW + "(DB:n) " + ChatColor.WHITE + msg;
                 prtf = ( lvl == 1 );
                 break;
             case 2:
@@ -177,7 +177,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         if( action.equals( Action.RIGHT_CLICK_AIR ) ) {
                             if ( player.hasPermission( "ExpCube.set" ) ) {
                                 if ( ench<10 ) {
-                                    if ( MiniExp<player.getTotalExperience() ) {
+                                    if ( !( MiniExp>player.getTotalExperience() ) ) {
                                         ench++;
 
                                         int OldExp = player.getTotalExperience();
