@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2018 sugichan. All rights reserved.
+ *  Copyright (c) 2018 Kumaisu. All rights reserved.
  */
 package com.mycompany.expcube;
 
@@ -27,7 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  *
- * @author sugichan
+ * @author Kumaisu
  */
 public class ExpCube extends JavaPlugin implements Listener {
 

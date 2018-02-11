@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2018 sugichan. All rights reserved.
+ *  Copyright (c) 2018 Kumaisu. All rights reserved.
  */
 package com.mycompany.expcube;
 
@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  * 設定をまとめて取り扱う構造体
- * @author sugichan
+ * @author Kumaisu
  */
 public class Config {
     
