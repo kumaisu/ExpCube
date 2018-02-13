@@ -201,7 +201,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     Debug( player.getName() + " Cube Full", 1 );
                                 }
                             } else {
-                                player.sendMessage( ChatColor.RED + "You do not have permission" );
+                                player.sendMessage( config.getNoPermission() );
                             }
                         }
                         
@@ -253,7 +253,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     Debug( player.getName() + " Cube Empty", 1 );
                                 }
                             } else {
-                                player.sendMessage( ChatColor.RED + "You do not have permission" );
+                                player.sendMessage( config.getNoPermission() );
                             }
                         }
                         Debug( player.getName() + " After Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
@@ -293,7 +293,7 @@ public class ExpCube extends JavaPlugin implements Listener {
     public boolean onCommand(CommandSender sender,Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("cubeget")) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(ChatColor.RED + "このコマンドはゲーム内から実行してください。");
+                Bukkit.getServer().getConsoleSender().sendMessage( ChatColor.RED + "このコマンドはゲーム内から実行してください。" );
             } else {
                 Player p = (Player)sender;
                 p.sendMessage(ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!");

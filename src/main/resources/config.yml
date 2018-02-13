@@ -18,3 +18,5 @@ messages:
   CubeFull: "§4[ExpCube] Full EXP this Cube."
   CubeEmpty: "§4[ExpCube] Empty this Cube."
   Sneaking: "§e[ExpCube] ExpCube use to Sneak"
+  NoPermission: "§4貴方は権限を持っていません"
+  

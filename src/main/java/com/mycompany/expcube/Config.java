@@ -3,6 +3,7 @@
  */
 package com.mycompany.expcube;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -27,7 +28,7 @@ public class Config {
     
     public Config(Plugin plugin) {
         this.plugin = plugin;
-        plugin.getLogger().info( "Config Loading now..." );
+        Bukkit.getServer().getConsoleSender().sendMessage( "Config Loading now..." );
         load();
     }
     
@@ -116,6 +117,9 @@ public class Config {
         return Sneaking;
     }
     
+    public String getNoPermission() {
+        return config.getString( "messages.NoPermission" );
+    }
     /*
     public Map<String, String> getMapKeys() {
         return mapKeys;
