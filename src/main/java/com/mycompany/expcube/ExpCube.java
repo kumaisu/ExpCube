@@ -197,11 +197,11 @@ public class ExpCube extends JavaPlugin implements Listener {
                                         
                                     } else {
                                         player.sendMessage( ReplaceString( player, config.getNoEnough(),0 ,0 ) );
-                                        Debug( player.getName() + " Not enough EXP", 1 );
+                                        Debug( player.getName() + " " + ReplaceString( player, config.getNoEnough(),0 ,0 ), 1 );
                                     }
                                 } else {
                                     player.sendMessage( ReplaceString( player, config.getCubeFull(),0 ,0 ) );
-                                    Debug( player.getName() + " Cube Full", 1 );
+                                    Debug( player.getName() + " " + ReplaceString( player, config.getCubeFull(),0 ,0 ), 1 );
                                 }
                             } else {
                                 player.sendMessage( config.getNoPermission() );
@@ -253,7 +253,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                                 } else {
                                     player.sendMessage( ReplaceString( player, config.getCubeEmpty(), 0, 0 ) );
-                                    Debug( player.getName() + " Cube Empty", 1 );
+                                    Debug( player.getName() + " " + ReplaceString( player, config.getCubeEmpty(), 0, 0 ), 1 );
                                 }
                             } else {
                                 player.sendMessage( config.getNoPermission() );
@@ -327,4 +327,3 @@ public class ExpCube extends JavaPlugin implements Listener {
     }
 
 }
-
