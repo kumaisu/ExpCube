@@ -101,12 +101,9 @@ public class ExpCube extends JavaPlugin implements Listener {
             MSG = String.format( "§f[EXP] %4d/%4d", ench*100, MaxExp );
             lores.add( MSG );
         } else {
-            MSG = "§eスニーク§fしながら";
-            lores.add( MSG );
-            MSG = "§b右クリック§fで貯める";
-            lores.add( MSG );
-            MSG = "§b左クリック§fで取り出す";
-            lores.add( MSG );
+            lores.add( config.ZeroCubeMsg( 1 ) );
+            lores.add( config.ZeroCubeMsg( 2 ) );
+            lores.add( config.ZeroCubeMsg( 3 ) );
         }
         
         ItemMeta im = item.getItemMeta();   //ItemStackから、ItemMetaを取得します。
@@ -118,6 +115,28 @@ public class ExpCube extends JavaPlugin implements Listener {
         item.addUnsafeEnchantment( Enchantment.PROTECTION_ENVIRONMENTAL, ench );
                     
         return item;
+    }
+    
+    public void setNewLevel( Player p ) {
+        p.setLevel( 0 );
+        p.setExp( 0 );
+        int TotalExp = p.getTotalExperience();
+        for( ;TotalExp > p.getExpToLevel(); )
+        {
+            TotalExp -= p.getExpToLevel();
+            p.setLevel( p.getLevel() + 1 );
+        }
+        float xp = (float)TotalExp / (float)p.getExpToLevel();
+        p.setExp( xp );
+    }
+
+    public String ReplaceString( Player p, String Msg ) {
+        if ( Msg=="" ) { return config.ConfigErrorMsg(); }
+        
+        Msg = Msg.replace( "%player%", p.getName() );
+        Msg = Msg.replace( "%TotalExp%", p.getTotalExperience() );
+        Msg = Msg.replace( "$", "§" );
+        return Msg;
     }
     
     @Override
@@ -138,19 +157,6 @@ public class ExpCube extends JavaPlugin implements Listener {
         } else {
             this.getLogger().info( "ExpCube Recipe Disable." );
         }
-    }
-
-    public void setNewLevel( Player p ) {
-        p.setLevel( 0 );
-        p.setExp( 0 );
-        int TotalExp = p.getTotalExperience();
-        for( ;TotalExp > p.getExpToLevel(); )
-        {
-            TotalExp -= p.getExpToLevel();
-            p.setLevel( p.getLevel() + 1 );
-        }
-        float xp = (float)TotalExp / (float)p.getExpToLevel();
-        p.setExp(xp);                                        
     }
 
     @EventHandler
@@ -181,7 +187,6 @@ public class ExpCube extends JavaPlugin implements Listener {
                                         ench++;
 
                                         int OldExp = player.getTotalExperience();
-                                        // int totalExp = player.getTotalExperience() - MiniExp;
                                         player.setTotalExperience( player.getTotalExperience() - MiniExp );
                                         player.sendMessage( config.getExpToCube() + "(" + ( ench*MiniExp ) +  "/" + MaxExp + ")" );
                                         Debug( player.getName() + " Right Click Cube(" + ench + ") Exp(" + OldExp + " => " + player.getTotalExperience() + ")", 1 );

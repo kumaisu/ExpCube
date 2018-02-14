@@ -120,6 +120,23 @@ public class Config {
     public String getNoPermission() {
         return config.getString( "messages.NoPermission" );
     }
+    
+    public String ZeroCubeMsg( int line ) {
+        switch ( line ) {
+            case 1:
+                return config.getString( "messages.ZeroCube1" );
+            case 2:
+                return config.getString( "messages.ZeroCube2" );
+            case 3:
+                return config.getString( "messages.ZeroCube3" );
+            default:
+                return config.getString( "messages.EC_ERROR" );
+        }
+    }
+    
+    public String ConfigErrorMsg() {
+        return config.getString( "messages.EC_ERROR" );
+    }
     /*
     public Map<String, String> getMapKeys() {
         return mapKeys;

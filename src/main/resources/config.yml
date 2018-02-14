@@ -8,10 +8,11 @@ CubeRecipe: false
 
 #Cube ExpOrb Mode
 # true:Orb , false:Direct
-OrbMode: false
+hhOrbMode: false
 
 #Action Messages
 messages:
+  EC_ERROR: "§4ExpCube Config Error"
   ExpToCube: "§b[ExpCube] Exp to Cube at 100."
   ExpFromCube: "§b[ExpCube] EXP from Cube at 100."
   NoEnough: "§4[ExpCube] Not enough EXP."
@@ -19,4 +20,6 @@ messages:
   CubeEmpty: "§4[ExpCube] Empty this Cube."
   Sneaking: "§e[ExpCube] ExpCube use to Sneak"
   NoPermission: "§4貴方は権限を持っていません"
-  
+  ZeroCube1: "§eスニーク§fしながら"
+  ZeroCube2: "§b右クリック§fで貯める"
+  ZeroCube3: "§b左クリック§fで取り出す"
