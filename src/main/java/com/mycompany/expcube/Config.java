@@ -137,6 +137,10 @@ public class Config {
     public String ConfigErrorMsg() {
         return config.getString( "messages.EC_ERROR" );
     }
+    
+    public String InsideErrorMsg() {
+        return config.getString( "messages.insideErr" );
+    }
     /*
     public Map<String, String> getMapKeys() {
         return mapKeys;

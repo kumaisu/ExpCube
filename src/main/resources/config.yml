@@ -8,18 +8,20 @@ CubeRecipe: false
 
 #Cube ExpOrb Mode
 # true:Orb , false:Direct
-hhOrbMode: false
+OrbMode: false
 
 #Action Messages
 messages:
-  EC_ERROR: "§4ExpCube Config Error"
-  ExpToCube: "§b[ExpCube] Exp to Cube at 100."
-  ExpFromCube: "§b[ExpCube] EXP from Cube at 100."
-  NoEnough: "§4[ExpCube] Not enough EXP."
-  CubeFull: "§4[ExpCube] Full EXP this Cube."
-  CubeEmpty: "§4[ExpCube] Empty this Cube."
-  Sneaking: "§e[ExpCube] ExpCube use to Sneak"
-  NoPermission: "§4貴方は権限を持っていません"
-  ZeroCube1: "§eスニーク§fしながら"
-  ZeroCube2: "§b右クリック§fで貯める"
-  ZeroCube3: "§b左クリック§fで取り出す"
+  EC_ERROR: "$4ExpCube Config Error"
+  ExpToCube: "$b[ExpCube] Exp to Cube at 100.(%minExp%/%maxExp%)"
+  ExpFromCube: "$b[ExpCube] EXP from Cube at 100.(%minExp%/%maxExp%)"
+  NoEnough: "$4[ExpCube] Not enough EXP, You have %TotalExp% EXP"
+  CubeFull: "$4[ExpCube] Full EXP this Cube."
+  CubeEmpty: "$4[ExpCube] Empty this Cube."
+  Sneaking: "$e[ExpCube] ExpCube use to Sneak"
+  NoPermission: "$4You do not have permission."
+  ZeroCube1: "$fWhile $esneaking"
+  ZeroCube2: "$bRight click$f to save"
+  ZeroCube3: "$fRemove by $bleft click"
+  insideErr: "$4Please execute this command from inside the game."
+  

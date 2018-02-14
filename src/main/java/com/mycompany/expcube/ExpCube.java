@@ -130,11 +130,13 @@ public class ExpCube extends JavaPlugin implements Listener {
         p.setExp( xp );
     }
 
-    public String ReplaceString( Player p, String Msg ) {
-        if ( Msg=="" ) { return config.ConfigErrorMsg(); }
+    public String ReplaceString( Player p, String Msg, int min, int max ) {
+        if ( "".equals( Msg ) ) { return config.ConfigErrorMsg(); }
         
         Msg = Msg.replace( "%player%", p.getName() );
-        Msg = Msg.replace( "%TotalExp%", p.getTotalExperience() );
+        Msg = Msg.replace( "%TotalExp%", String.valueOf( p.getTotalExperience() ) );
+        Msg = Msg.replace( "%minExp%", String.valueOf( min ) );
+        Msg = Msg.replace( "%maxExp%", String.valueOf( max ) );
         Msg = Msg.replace( "$", "§" );
         return Msg;
     }
@@ -188,21 +190,17 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                                         int OldExp = player.getTotalExperience();
                                         player.setTotalExperience( player.getTotalExperience() - MiniExp );
-                                        player.sendMessage( config.getExpToCube() + "(" + ( ench*MiniExp ) +  "/" + MaxExp + ")" );
+                                        player.sendMessage( ReplaceString( player, config.getExpToCube(), ench*MiniExp, MaxExp ) );
                                         Debug( player.getName() + " Right Click Cube(" + ench + ") Exp(" + OldExp + " => " + player.getTotalExperience() + ")", 1 );
 
                                         setNewLevel( player );
                                         
                                     } else {
-                                        if ( config.getNoEnough().equals( "" ) ) {
-                                            player.sendMessage( ChatColor.RED + "[ExpCube] Not enough EXP, Your have " + player.getTotalExperience() + " EXP" );
-                                        } else {
-                                            player.sendMessage( config.getNoEnough() + "(" + player.getTotalExperience() + " Exp.)" );
-                                        }
+                                        player.sendMessage( ReplaceString( player, config.getNoEnough(),0 ,0 ) );
                                         Debug( player.getName() + " Not enough EXP", 1 );
                                     }
                                 } else {
-                                    player.sendMessage( config.getCubeFull() + "(" + player.getTotalExperience() + ")" );
+                                    player.sendMessage( ReplaceString( player, config.getCubeFull(),0 ,0 ) );
                                     Debug( player.getName() + " Cube Full", 1 );
                                 }
                             } else {
@@ -216,7 +214,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                 if ( ench>0 ) {
                                     ench--;
 
-                                    player.sendMessage( config.getExpFromCube() + "(" + ( ench*MiniExp ) +  "/" + MaxExp + ")" );
+                                    player.sendMessage( ReplaceString( player, config.getExpFromCube(), ench*MiniExp, MaxExp ) );
                                     Debug( player.getName() + " Left Click Cube(" + ench + ") Exp(" + player.getTotalExperience() + ")", 1 );
 
                                     if ( config.getOrbMode() ) {
@@ -254,7 +252,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     }
 
                                 } else {
-                                    player.sendMessage( config.getCubeEmpty() + "(" + player.getTotalExperience() + ")" );
+                                    player.sendMessage( ReplaceString( player, config.getCubeEmpty(), 0, 0 ) );
                                     Debug( player.getName() + " Cube Empty", 1 );
                                 }
                             } else {
@@ -298,7 +296,7 @@ public class ExpCube extends JavaPlugin implements Listener {
     public boolean onCommand(CommandSender sender,Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("cubeget")) {
             if (!(sender instanceof Player)) {
-                Bukkit.getServer().getConsoleSender().sendMessage( ChatColor.RED + "このコマンドはゲーム内から実行してください。" );
+                Bukkit.getServer().getConsoleSender().sendMessage( config.InsideErrorMsg() );
             } else {
                 Player p = (Player)sender;
                 p.sendMessage(ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!");
