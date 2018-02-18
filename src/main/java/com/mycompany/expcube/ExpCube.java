@@ -166,7 +166,7 @@ public class ExpCube extends JavaPlugin implements Listener {
         Msg = Msg.replace( "%TotalExp%", String.valueOf( p.getTotalExperience() ) );
         Msg = Msg.replace( "%minExp%", String.valueOf( min ) );
         Msg = Msg.replace( "%maxExp%", String.valueOf( max ) );
-        Msg = Msg.replace( "$", "§" );
+        Msg = Msg.replace( "%$", "§" );
         return Msg;
     }
     
@@ -192,9 +192,6 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     @EventHandler
     public void Click(PlayerInteractEvent event) {
-        if ( ClickFlag ) { return; }
-        ClickFlag = true;
-        task = this.getServer().getScheduler().runTaskTimer( this, new Timer( this ,config.CoolCount() ), 0L, config.CoolTick() );
         
         Player player = event.getPlayer();
         Action action = event.getAction();
@@ -206,7 +203,15 @@ public class ExpCube extends JavaPlugin implements Listener {
             if ( item.getItemMeta().hasDisplayName() ) {
                 if ( item.getItemMeta().getDisplayName().equalsIgnoreCase( "§aExpCube" ) ) {
                     if ( player.isSneaking() ) {
-                        event.setCancelled(true);
+                        event.setCancelled( true );
+
+                        //  CoolTimer
+                        //  ClickFlag が true ならクリックキャンセルだけして終わり
+                        //  false なら、true にしてタイマー起動後、処理
+                        if ( ClickFlag ) { return; }
+                        ClickFlag = true;
+                        task = this.getServer().getScheduler().runTaskTimer( this, new Timer( this ,config.CoolCount() ), 0L, config.CoolTick() );
+
                         player.getInventory().setItemInMainHand( null );
 
                         int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
@@ -228,15 +233,15 @@ public class ExpCube extends JavaPlugin implements Listener {
                                         setNewLevel( player );
 
                                     } else {
-                                        player.sendMessage( ReplaceString( player, config.getNoEnough(),0 ,0 ) );
-                                        Debug( player.getName() + " " + ReplaceString( player, config.getNoEnough(),0 ,0 ), 1 );
+                                        player.sendMessage( ReplaceString( player, config.getNoEnough(), 0, 0 ) );
+                                        Debug( player.getName() + " " + ReplaceString( player, config.getNoEnough(), 0, 0 ), 1 );
                                     }
                                 } else {
-                                    player.sendMessage( ReplaceString( player, config.getCubeFull(),0 ,0 ) );
-                                    Debug( player.getName() + " " + ReplaceString( player, config.getCubeFull(),0 ,0 ), 1 );
+                                    player.sendMessage( ReplaceString( player, config.getCubeFull(), 0, 0 ) );
+                                    Debug( player.getName() + " " + ReplaceString( player, config.getCubeFull(), 0, 0 ), 1 );
                                 }
                             } else {
-                                player.sendMessage( config.getNoPermission() );
+                                player.sendMessage( ReplaceString( player, config.getNoPermission(), 0, 0 ) );
                             }
                         }
 
@@ -287,7 +292,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     Debug( player.getName() + " " + ReplaceString( player, config.getCubeEmpty(), 0, 0 ), 1 );
                                 }
                             } else {
-                                player.sendMessage( config.getNoPermission() );
+                                player.sendMessage( ReplaceString( player, config.getNoPermission(), 0, 0 ) );
                             }
                         }
                         Debug( player.getName() + " After Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
@@ -314,7 +319,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         if ( ActCancel ) {
                             event.setCancelled(true);
                         }
-                        player.sendMessage( config.getSneaking() );
+                        player.sendMessage( ReplaceString( player, config.getSneaking(), 0, 0 ) );
                     }
                 }
             }
@@ -325,7 +330,7 @@ public class ExpCube extends JavaPlugin implements Listener {
     public boolean onCommand(CommandSender sender,Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("cubeget")) {
             if (!(sender instanceof Player)) {
-                Bukkit.getServer().getConsoleSender().sendMessage( config.InsideErrorMsg() );
+                Bukkit.getServer().getConsoleSender().sendMessage( ReplaceString( null, config.InsideErrorMsg(), 0, 0 ) );
             } else {
                 Player p = (Player)sender;
                 p.sendMessage(ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!");
