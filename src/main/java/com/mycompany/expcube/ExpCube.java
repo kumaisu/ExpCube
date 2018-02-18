@@ -24,6 +24,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  *
@@ -31,9 +33,36 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class ExpCube extends JavaPlugin implements Listener {
 
+    BukkitTask task = null; //  あとで自分を止めるためのもの
     private Config config;
+    private boolean ClickFlag = false;
     final private int MiniExp = 100;
     final private int MaxExp = 1000;
+
+    private class Timer extends BukkitRunnable{
+        int time;//秒数
+        JavaPlugin plugin;//BukkitのAPIにアクセスするためのJavaPlugin
+        
+        public Timer(JavaPlugin plugin ,int i) {
+            this.time = i;
+            this.plugin = plugin;
+        }
+        
+        @Override
+        public void run() {
+            if( time <= 0 ){
+                //タイムアップなら
+                ClickFlag = false;
+                plugin.getServer().getScheduler().cancelTask( task.getTaskId() ); //自分自身を止める
+            }
+            /*
+            else{
+                plugin.getServer().broadcastMessage("" + time);//残り秒数を全員に表示
+            }
+            */
+            time--; //  1秒減算
+        }
+    }
 
     // 0:none 1:normal 2:full
     public void Debug( String msg, int lvl ) {
@@ -163,20 +192,23 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     @EventHandler
     public void Click(PlayerInteractEvent event) {
+        if ( ClickFlag ) { return; }
+        ClickFlag = true;
+        task = this.getServer().getScheduler().runTaskTimer( this, new Timer( this ,config.CoolCount() ), 0L, config.CoolTick() );
+        
         Player player = event.getPlayer();
         Action action = event.getAction();
-        
+
         ItemStack item = player.getInventory().getItemInMainHand();
         ItemStack item2 = new ItemStack( item ); // 複数スタックの退避用
 
         if ( item.getType() == Material.QUARTZ_BLOCK ) {
             if ( item.getItemMeta().hasDisplayName() ) {
                 if ( item.getItemMeta().getDisplayName().equalsIgnoreCase( "§aExpCube" ) ) {
-                    
                     if ( player.isSneaking() ) {
                         event.setCancelled(true);
                         player.getInventory().setItemInMainHand( null );
-                        
+
                         int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
                         Debug( player.getName() + " Befor Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
@@ -194,7 +226,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                         Debug( player.getName() + " Right Click Cube(" + ench + ") Exp(" + OldExp + " => " + player.getTotalExperience() + ")", 1 );
 
                                         setNewLevel( player );
-                                        
+
                                     } else {
                                         player.sendMessage( ReplaceString( player, config.getNoEnough(),0 ,0 ) );
                                         Debug( player.getName() + " " + ReplaceString( player, config.getNoEnough(),0 ,0 ), 1 );
@@ -207,7 +239,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                 player.sendMessage( config.getNoPermission() );
                             }
                         }
-                        
+
                         //  if( action.equals( Action.LEFT_CLICK_AIR ) || ( action.equals( Action.LEFT_CLICK_BLOCK ) ) ) {
                         if( action.equals( Action.LEFT_CLICK_AIR ) ) {
                             if ( player.hasPermission( "ExpCube.get" ) ) {
@@ -246,7 +278,6 @@ public class ExpCube extends JavaPlugin implements Listener {
                                                 }
                                             }
                                         }
-                                        //  player.giveExp( BackExp );
                                         player.setTotalExperience( player.getTotalExperience() + BackExp );
                                         setNewLevel( player );
                                     }
@@ -263,7 +294,6 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                         int amount = item.getAmount();
                         Debug( player.getName() + " Have Amount is [" + amount + "]", 2 );
-                        // player.setItemInHand( null );
                         item.setAmount( 1 );    // １スタックに強制設定
                         player.getInventory().setItemInMainHand( ItemToInventory( item, ench ) );
 
@@ -276,7 +306,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                     } else {
                         Block block = event.getClickedBlock();
                         Boolean ActCancel = true;
-                        
+
                         if  ( !( block == null ) ) { 
                             Debug( player.getName() + " Clicked to " + block.getType().toString().toUpperCase(), 2 );
                             ActCancel = !( block.getType().equals( Material.CHEST ) || block.getType().equals( Material.TRAPPED_CHEST ) );
@@ -289,7 +319,6 @@ public class ExpCube extends JavaPlugin implements Listener {
                 }
             }
         }
-
     }
 
     @Override

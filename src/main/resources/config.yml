@@ -1,16 +1,22 @@
-#EXP Cube Config
+#   EXP Cube Config
 
-#Debug ( full / Default:normal / none )
+#   Debug ( full / Default:normal / none )
 Debug: normal
 
-#Cube Recipe Switch
+#   Cube Recipe Switch
 CubeRecipe: false
 
-#Cube ExpOrb Mode
-# true:Orb , false:Direct
+#   Cube ExpOrb Mode
+#   true:Orb , false:Direct
 OrbMode: false
 
-#Action Messages
+#   Cube Control Cool Time
+#   CoolTick 1 = 0.05sec
+#   CoolTick x CoolCount = 0.25sec( CoolTime )
+CoolTick: 2
+CoolCount: 5
+
+#   Action Messages
 messages:
   EC_ERROR: "$4ExpCube Config Error"
   ExpToCube: "$b[ExpCube] Exp to Cube at 100.(%minExp%/%maxExp%)"

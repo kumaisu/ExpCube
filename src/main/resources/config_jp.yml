@@ -1,16 +1,23 @@
-#EXP Cube Config
+#   EXP Cube Config
 
-#Debug ( full / Default:normal / none )
+#   Debug ( full / Default:normal / none )
 Debug: normal
 
-#Cube Recipe Switch
-#レシピを有効にするかどうか
+#   Cube Recipe Switch
+#   レシピを有効にするかどうか
 CubeRecipe: false
 
-#Cube ExpOrb Mode
-# true:Orb , false:Direct
-#経験値の戻り方の指定、通常はDirectで指定
+#   Cube ExpOrb Mode
+#   true:Orb , false:Direct
+#   経験値の戻り方の指定、通常はDirectで指定
 OrbMode: false
+
+#   Cube Control Cool Time
+#   CoolTick 1 = 0.05sec
+#   CoolTick x CoolCount = 0.25sec( CoolTime )
+#   アイテムクールタイムの設定、Tick割り込み頻度、回数で、トータルのクールタイムを決定する
+CoolTick: 2
+CoolCount: 5
 
 #Action Messages
 #各種メッセージ類
