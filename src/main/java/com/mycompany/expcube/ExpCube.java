@@ -130,9 +130,9 @@ public class ExpCube extends JavaPlugin implements Listener {
             MSG = String.format( "§f[EXP] %4d/%4d", ench*100, MaxExp );
             lores.add( MSG );
         } else {
-            lores.add( ReplaceString( null, config.ZeroCubeMsg( 1 ), 0, 0 ) );
-            lores.add( ReplaceString( null, config.ZeroCubeMsg( 2 ), 0, 0 ) );
-            lores.add( ReplaceString( null, config.ZeroCubeMsg( 3 ), 0, 0 ) );
+            lores.add( ReplaceString( (Player)null, config.ZeroCubeMsg( 1 ), 0, 0 ) );
+            lores.add( ReplaceString( (Player)null, config.ZeroCubeMsg( 2 ), 0, 0 ) );
+            lores.add( ReplaceString( (Player)null, config.ZeroCubeMsg( 3 ), 0, 0 ) );
         }
         
         ItemMeta im = item.getItemMeta();   //ItemStackから、ItemMetaを取得します。
@@ -162,8 +162,10 @@ public class ExpCube extends JavaPlugin implements Listener {
     public String ReplaceString( Player p, String Msg, int min, int max ) {
         if ( "".equals( Msg ) ) { return config.ConfigErrorMsg(); }
         
-        Msg = Msg.replace( "%player%", p.getName() );
-        Msg = Msg.replace( "%TotalExp%", String.valueOf( p.getTotalExperience() ) );
+        if ( p != null ) {
+            Msg = Msg.replace( "%player%", p.getName() );
+            Msg = Msg.replace( "%TotalExp%", String.valueOf( p.getTotalExperience() ) );
+        }
         Msg = Msg.replace( "%minExp%", String.valueOf( min ) );
         Msg = Msg.replace( "%maxExp%", String.valueOf( max ) );
         Msg = Msg.replace( "%$", "§" );
@@ -330,7 +332,7 @@ public class ExpCube extends JavaPlugin implements Listener {
     public boolean onCommand(CommandSender sender,Command cmd, String commandLabel, String[] args) {
         if (cmd.getName().equalsIgnoreCase("cubeget")) {
             if (!(sender instanceof Player)) {
-                Bukkit.getServer().getConsoleSender().sendMessage( ReplaceString( null, config.InsideErrorMsg(), 0, 0 ) );
+                Bukkit.getServer().getConsoleSender().sendMessage( ReplaceString( (Player)null, config.InsideErrorMsg(), 0, 0 ) );
             } else {
                 Player p = (Player)sender;
                 p.sendMessage(ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!");
