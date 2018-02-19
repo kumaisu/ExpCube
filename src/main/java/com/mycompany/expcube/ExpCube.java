@@ -130,9 +130,9 @@ public class ExpCube extends JavaPlugin implements Listener {
             MSG = String.format( "§f[EXP] %4d/%4d", ench*100, MaxExp );
             lores.add( MSG );
         } else {
-            lores.add( config.ZeroCubeMsg( 1 ) );
-            lores.add( config.ZeroCubeMsg( 2 ) );
-            lores.add( config.ZeroCubeMsg( 3 ) );
+            lores.add( ReplaceString( null, config.ZeroCubeMsg( 1 ), 0, 0 ) );
+            lores.add( ReplaceString( null, config.ZeroCubeMsg( 2 ), 0, 0 ) );
+            lores.add( ReplaceString( null, config.ZeroCubeMsg( 3 ), 0, 0 ) );
         }
         
         ItemMeta im = item.getItemMeta();   //ItemStackから、ItemMetaを取得します。
