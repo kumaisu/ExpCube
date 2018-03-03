@@ -5,6 +5,7 @@ package com.mycompany.expcube;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -206,6 +207,11 @@ public class ExpCube extends JavaPlugin implements Listener {
                 if ( item.getItemMeta().getDisplayName().equalsIgnoreCase( "§aExpCube" ) ) {
                     if ( player.isSneaking() ) {
                         event.setCancelled( true );
+
+                        if ( ( item.getAmount() > 1 ) && ( !Arrays.asList( player.getInventory().getStorageContents()).contains( null ) ) ) {
+                            player.sendMessage( ReplaceString( player, config.InventoryFullMsg(), 0, 0 ) );
+                            return;
+                        }
 
                         //  CoolTimer
                         //  ClickFlag が true ならクリックキャンセルだけして終わり

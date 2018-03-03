@@ -142,6 +142,10 @@ public class Config {
         return config.getString( "messages.insideErr" );
     }
     
+    public String InventoryFullMsg() {
+        return config.getString( "messages.InvFull" );
+    }
+    
     //  5tick(0.25秒)ごとにTimerクラスのrunメソッドを実行してね
     //  Timer 5tick×2回 = 0.5秒です
     public long CoolTick() {

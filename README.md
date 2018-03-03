@@ -6,6 +6,10 @@ Minecraft Plugin ExpCube Repository
 This is a tool for storing / retrieving empirical values in blocks  
 
 1.When retrieving the experience value, you can repair if there is a tool with Mending off hand.  
+  
+ExpCubeとは、ブロックに経験値を保存したり取りだしたりするためのツールです  
+
+1.経験値を取りだす時に、オフハンドに修繕付きのアイテムを持っていると、修復する事ができます  
 
 **Usage**  
 
