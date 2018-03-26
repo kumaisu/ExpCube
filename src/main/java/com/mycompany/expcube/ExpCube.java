@@ -167,8 +167,10 @@ public class ExpCube extends JavaPlugin implements Listener {
             Msg = Msg.replace( "%player%", p.getName() );
             Msg = Msg.replace( "%TotalExp%", String.valueOf( p.getTotalExperience() ) );
         }
-        Msg = Msg.replace( "%minExp%", String.valueOf( nums[0] ) );
-        Msg = Msg.replace( "%maxExp%", String.valueOf( nums[1] ) );
+        if ( nums.length>0 ) {
+            Msg = Msg.replace( "%minExp%", String.valueOf( nums[0] ) );
+            Msg = Msg.replace( "%maxExp%", String.valueOf( nums[1] ) );
+        }
         Msg = Msg.replace( "%$", "§" );
         return Msg;
     }
