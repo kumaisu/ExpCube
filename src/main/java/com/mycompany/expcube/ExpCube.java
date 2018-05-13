@@ -153,10 +153,12 @@ public class ExpCube extends JavaPlugin implements Listener {
         int TotalExp = p.getTotalExperience();
         for( ;TotalExp > p.getExpToLevel(); )
         {
+            Debug( "Level = " + p.getLevel() + " Total = " + TotalExp + " Calc Exp = " + ( p.getLevel() >= 15 ? 37 + ( p.getLevel() - 15 ) * 5 : 7 + p.getLevel() * 2 ) + " getExpToLevel = " + p.getExpToLevel(), 2 );
             TotalExp -= p.getExpToLevel();
             p.setLevel( p.getLevel() + 1 );
         }
         float xp = ( float ) TotalExp / ( float ) p.getExpToLevel();
+        Debug( "Level = " + p.getLevel() + " Total = " + TotalExp + " Calc Exp = " + ( p.getLevel() >= 15 ? 37 + ( p.getLevel() - 15 ) * 5 : 7 + p.getLevel() * 2 ) + " getExpToLevel = " + p.getExpToLevel() + " SetExpBar = " + xp, 2 );
         p.setExp( xp );
     }
 
@@ -226,6 +228,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                         int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
+                        if ( config.getDebug() == 2 ) player.sendMessage( ChatColor.GREEN + "[ExpCube]" + ChatColor.YELLOW + " Now your Experience is " + player.getTotalExperience() + "." );
                         Debug( player.getName() + " Befor Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
 
                         // if( action.equals( Action.RIGHT_CLICK_AIR ) || action.equals( Action.RIGHT_CLICK_BLOCK ) ) {
@@ -265,19 +268,23 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     Debug( player.getName() + " Left Click Cube(" + ench + ") Exp(" + player.getTotalExperience() + ")", 1 );
 
                                     if ( config.getOrbMode() ) {
+                                        Debug( "OrbMode", 2 );
                                         //  従来は直接EXPに反映していたが、"修繕"への影響を加味し
                                         //  経験値100のExpOrbをドロップする形式
                                         Location loc = player.getLocation();
                                         ExperienceOrb exp = (ExperienceOrb) loc.getBlock().getWorld().spawn( loc.getBlock().getLocation().add( 0, 0, 0 ), ExperienceOrb.class );
                                         exp.setExperience( MiniExp );
                                     } else {
+                                        Debug( "None OrbMode", 2 );
                                         //  従来のEｘｐ直接反映方式
                                         //  オフハンドに修繕アイテムがある場合の処理を追加して対応
                                         int BackExp = MiniExp;
 
                                         //  オフハンドに修繕するアイテムがあるかチェックするとこ
-                                        ItemStack offHand = player.getInventory().getItemInOffHand();
-                                        if ( offHand.getAmount()>0 ) {
+                                        Debug( "Get off Hand",2 );
+                                        if ( player.getInventory().getItemInOffHand() != null ) {
+                                            ItemStack offHand = player.getInventory().getItemInOffHand();
+                                            Debug( "OffHand" + offHand.getItemMeta().getDisplayName(),2 );
                                             if ( offHand.getItemMeta().getEnchantLevel( Enchantment.MENDING ) > 0 ) {
                                                 short dmg = offHand.getDurability();
                                                 if ( dmg>0 ) {
@@ -293,7 +300,9 @@ public class ExpCube extends JavaPlugin implements Listener {
                                                 }
                                             }
                                         }
+                                        Debug( "Set Exp " + BackExp, 2 );
                                         player.setTotalExperience( player.getTotalExperience() + BackExp );
+
                                         setNewLevel( player );
                                     }
 
@@ -305,6 +314,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                 player.sendMessage( ReplaceString( player, config.getNoPermission() ) );
                             }
                         }
+                        if ( config.getDebug() == 2 ) player.sendMessage( ChatColor.GREEN + "[ExpCube]" + ChatColor.YELLOW + " Now your Experience is " + player.getTotalExperience() + "." );
                         Debug( player.getName() + " After Ex" + player.getExp() + ":Lv" + player.getLevel() + " > " + player.getTotalExperience(), 2 );
 
                         int amount = item.getAmount();
