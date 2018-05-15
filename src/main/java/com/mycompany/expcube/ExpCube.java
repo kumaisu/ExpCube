@@ -234,7 +234,9 @@ public class ExpCube extends JavaPlugin implements Listener {
                         // if( action.equals( Action.RIGHT_CLICK_AIR ) || action.equals( Action.RIGHT_CLICK_BLOCK ) ) {
                         if( action.equals( Action.RIGHT_CLICK_AIR ) ) {
                             if ( player.hasPermission( "ExpCube.set" ) ) {
+                                Debug( "Cube State = " + ench, 2 );
                                 if ( ench<10 ) {
+                                    Debug( "Player Experience = " + player.getTotalExperience(), 2 );
                                     if ( !( MiniExp>player.getTotalExperience() ) ) {
                                         ench++;
 
@@ -282,9 +284,10 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                                         //  オフハンドに修繕するアイテムがあるかチェックするとこ
                                         Debug( "Get off Hand",2 );
-                                        if ( player.getInventory().getItemInOffHand() != null ) {
+
+                                        if ( player.getInventory().getItemInOffHand().getType() != Material.AIR ) {
                                             ItemStack offHand = player.getInventory().getItemInOffHand();
-                                            Debug( "OffHand" + offHand.getItemMeta().getDisplayName(),2 );
+                                            Debug( "OffHand = " + offHand.getItemMeta().getDisplayName(), 2 );
                                             if ( offHand.getItemMeta().getEnchantLevel( Enchantment.MENDING ) > 0 ) {
                                                 short dmg = offHand.getDurability();
                                                 if ( dmg>0 ) {
