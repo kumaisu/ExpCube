@@ -246,7 +246,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                     if ( player.isSneaking() ) {
                         event.setCancelled( true );
 
-                        if ( ( item.getAmount() > 1 ) && ( !Arrays.asList( player.getInventory().getStorageContents()).contains( null ) ) ) {
+                        if ( ( item.getAmount() > 1 ) && ( !Arrays.asList( player.getInventory().getStorageContents() ).contains( null ) ) ) {
                             player.sendMessage( ReplaceString( player, config.InventoryFullMsg() ) );
                             return;
                         }
