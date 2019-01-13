@@ -191,7 +191,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                 " getExpToLevel = ", String.valueOf( p.getExpToLevel() ),
                 " Calc Exp = ", String.valueOf( getExpNeededToLevelUp( p.getLevel() ) ),
                 " SetExpBar = ", String.valueOf( xp )
-            ), 2, null
+            ), 1, null
         );
 
         p.setExp( xp );
@@ -212,7 +212,7 @@ public class ExpCube extends JavaPlugin implements Listener {
     }
     
     public static int convertExpPercentageToExp( int xp, float expPercentage ) {
-        return ( int ) ( Math.round( getExpNeededToLevelUp( xp ) ) * expPercentage );
+        return ( int ) ( Math.round( getExpNeededToLevelUp( xp ) * expPercentage ) );
     }
     
     public static int getExpNeededToLevelUp( int xp ) {
@@ -305,7 +305,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
                         if ( config.getDebug() == 2 ) { player.sendMessage( StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) ); }
-                        Debug( StringBuild( "Befor Ex", String.valueOf( player.getExp() ), ":Lv", String.valueOf( player.getLevel() ), " > ", String.valueOf( getNowTotalExp( player ) ) ), 2, player );
+                        Debug( StringBuild( "Befor Ex", String.valueOf( player.getExp() ), ":Lv", String.valueOf( player.getLevel() ), " > ", String.valueOf( getNowTotalExp( player ) ) ), 1, player );
 
                         // if( action.equals( Action.RIGHT_CLICK_AIR ) || action.equals( Action.RIGHT_CLICK_BLOCK ) ) {
                         if( action.equals( Action.RIGHT_CLICK_AIR ) ) {
@@ -391,7 +391,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                             }
                         }
                         if ( config.getDebug() == 2 ) { player.sendMessage( StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) ); }
-                        Debug( StringBuild( "After Ex", String.valueOf( player.getExp() ), ":Lv", String.valueOf( player.getLevel() ), " > ", String.valueOf( getNowTotalExp( player ) ) ), 2, player );
+                        Debug( StringBuild( "After Ex", String.valueOf( player.getExp() ), ":Lv", String.valueOf( player.getLevel() ), " > ", String.valueOf( getNowTotalExp( player ) ) ), 1, player );
 
                         int amount = item.getAmount();
                         Debug( StringBuild( "Have Amount is [", String.valueOf( amount ), "]" ), 2, player );
@@ -409,7 +409,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         Boolean ActCancel = true;
 
                         if  ( !( block == null ) ) { 
-                            Debug( StringBuild( " Clicked to ", block.getType().toString().toUpperCase() ), 2, player );
+                            Debug( StringBuild( ChatColor.LIGHT_PURPLE + "Clicked to ", block.getType().toString().toUpperCase() ), 2, player );
                             ActCancel = !( block.getType().equals( Material.CHEST ) || block.getType().equals( Material.TRAPPED_CHEST ) );
                         }
                         if ( ActCancel ) {

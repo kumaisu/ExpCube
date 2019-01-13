@@ -13,10 +13,10 @@ ExpCubeとは、ブロックに経験値を保存したり取りだしたりす�
 
 **Usage**  
 
-/cubeget
-/ExpCube reload
-/ExpCube status
-/ExpCube mode
+/cubeget  
+/ExpCube reload  
+/ExpCube status  
+/ExpCube mode  
   
 Contact is Discord Kitsune#5955  
 Discord Server https://discord.gg/AgX3UxR  

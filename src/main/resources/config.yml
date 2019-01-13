@@ -16,8 +16,9 @@ OrbMode: false
 #   CoolTick 1 = 0.05sec
 #   CoolTick x CoolCount = 0.25sec( CoolTime )
 #   アイテムクールタイムの設定、Tick割り込み頻度、回数で、トータルのクールタイムを決定する
-CoolTick: 2
-CoolCount: 2
+#   上手く処理ができない場合は、クールタイムを設けると上手く行く時もあります
+CoolTick: 1
+CoolCount: 1
 
 #   Action Messages
 messages:
