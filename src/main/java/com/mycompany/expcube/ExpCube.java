@@ -105,36 +105,6 @@ public class ExpCube extends JavaPlugin implements Listener {
         }
     }
 
-    public void PrintStatus( CommandSender sender ) {
-        String StsMsg;
-        sender.sendMessage( ChatColor.AQUA + "=== ExpCube Config Status ===" );
-        switch ( config.getDebug() ) {
-            case 0:
-                StsMsg = "none";
-                break;
-            case 1:
-                StsMsg = "normal";
-                break;
-            case 2:
-                StsMsg = "full";
-                break;
-            default:
-                StsMsg = ChatColor.RED + "Error";
-        }
-        
-        sender.sendMessage( ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + StsMsg );
-        sender.sendMessage( ChatColor.AQUA + "Recipe Mode : " + ChatColor.WHITE + ( config.getRecipe() ? "true":"false" ) );
-        sender.sendMessage( ChatColor.AQUA + "ExpOrb Mode : " + ChatColor.WHITE + ( config.getOrbMode() ? "ExpOrg":"Direct") );
-        sender.sendMessage( ChatColor.AQUA + "ExpSet: " + ChatColor.WHITE + ( sender.hasPermission( "ExpCube.set" ) ? "true":"false" ) );
-        sender.sendMessage( ChatColor.AQUA + "ExpGet: " + ChatColor.WHITE + ( sender.hasPermission( "ExpCube.get" ) ? "true":"false" ) );
-        sender.sendMessage( ChatColor.AQUA + "ExpToCube : " + ChatColor.WHITE + config.getExpToCube() );
-        sender.sendMessage( ChatColor.AQUA + "ExpfmCube : " + ChatColor.WHITE + config.getExpFromCube() );
-        sender.sendMessage( ChatColor.AQUA + "ExpEnough : " + ChatColor.WHITE + config.getNoEnough() );
-        sender.sendMessage( ChatColor.AQUA + "Exp Empty : " + ChatColor.WHITE + config.getCubeEmpty() );
-        sender.sendMessage( ChatColor.AQUA + "Exp Full  : " + ChatColor.WHITE + config.getCubeFull() );
-        sender.sendMessage( ChatColor.AQUA + "UseExpCube: " + ChatColor.WHITE + config.getSneaking() );
-    }
-
     public ItemStack ItemToInventory( ItemStack item, int ench ) {
         List<String> lores = new ArrayList();
         String MSG;
@@ -439,20 +409,46 @@ public class ExpCube extends JavaPlugin implements Listener {
         }
         if ( cmd.getName().equalsIgnoreCase( "ExpCube" ) ) {
             if ( args.length > 0 ) {
-                if ( args[0].equals( "reload" ) ) {
-                    config = new Config( this );
-                    sender.sendMessage( ChatColor.GREEN + "ExpCube Config Reloaded." );
+                switch ( args[0] ) {
+                    case "reload":
+                        config = new Config( this );
+                        sender.sendMessage( ChatColor.GREEN + "ExpCube Config Reloaded." );
+                        break;
+                    case "status":
+                        config.PrintStatus( sender );
+                        break;
+                    case "mode":
+                        config.setOrbMode( !config.getOrbMode() );
+                        sender.sendMessage( ChatColor.GREEN + "Change Mode to " + ( config.getOrbMode() ? "ExpOrb":"Direct" ) );
+                        break;
+                    case "playerstatus":
+                    case "ps":
+                        PlayerStatus( sender );
+                        break;
+                    case "console":
+                        switch ( args[1] ) {
+                            case "full":
+                                config.setDebug( 2 );
+                                break;
+                            case "normal":
+                                config.setDebug( 1 );
+                                break;
+                            case "none":
+                                config.setDebug( 0 );
+                                break;
+                            default:
+                                sender.sendMessage( "usage: ExpCube console [full/normal/none]" );
+                        }
+                        sender.sendMessage( ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + config.getDebugString( config.getDebug() ) );
+                    default:
                 }
-                if ( args[0].equals( "status" ) ) {
-                    PrintStatus( sender );
-                }
-                if ( args[0].equals( "mode" ) ) {
-                    config.setOrbMode( !config.getOrbMode() );
-                    sender.sendMessage( ChatColor.GREEN + "Change Mode to " + ( config.getOrbMode() ? "ExpOrb":"Direct" ) );
-                }
-                if ( args[0].equals( "playerstatus" ) || args[0].equals( "ps" ) ) {
-                    PlayerStatus( sender );
-                }
+            } else {
+                sender.sendMessage( "usage: ExpCube command" );
+                sender.sendMessage( "  reload" );
+                sender.sendMessage( "  status" );
+                sender.sendMessage( "  mode" );
+                sender.sendMessage( "  playerstatus/ps" );
+                sender.sendMessage( "  console [full/normal/none]" );
             }
             return true;
         }
