@@ -98,6 +98,7 @@ public class ExpCube extends JavaPlugin implements Listener {
             default:
                 prtf = false;
         }
+        if ( lvl == 3 ) prtf = true;
         buf.append( ChatColor.WHITE );
         buf.append( msg );
         if ( prtf ) {
@@ -426,19 +427,22 @@ public class ExpCube extends JavaPlugin implements Listener {
                         PlayerStatus( sender );
                         break;
                     case "console":
-                        switch ( args[1] ) {
-                            case "full":
-                                config.setDebug( 2 );
-                                break;
-                            case "normal":
-                                config.setDebug( 1 );
-                                break;
-                            case "none":
-                                config.setDebug( 0 );
-                                break;
-                            default:
-                                sender.sendMessage( "usage: ExpCube console [full/normal/none]" );
-                        }
+                        if ( args.length>1 ) {
+                            switch ( args[1] ) {
+                                case "full":
+                                    config.setDebug( 2 );
+                                    break;
+                                case "normal":
+                                    config.setDebug( 1 );
+                                    break;
+                                case "none":
+                                    config.setDebug( 0 );
+                                    break;
+                                default:
+                                    sender.sendMessage( ChatColor.RED + "ExpCube Conaole command error !!" );
+                            }
+                        } else sender.sendMessage( "usage: ExpCube console [full/normal/none]" );
+
                         sender.sendMessage( ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + config.getDebugString( config.getDebug() ) );
                     default:
                 }
