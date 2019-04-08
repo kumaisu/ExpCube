@@ -40,6 +40,9 @@ public class ExpCube extends JavaPlugin implements Listener {
     final private int MiniExp = 100;
     final private int MaxExp = 1000;
 
+    /**
+     * Expの出し入れの際に一定間隔のクールタイムを実行する
+     */
     private class Timer extends BukkitRunnable{
         int time;//秒数
         JavaPlugin plugin;//BukkitのAPIにアクセスするためのJavaPlugin
@@ -65,6 +68,35 @@ public class ExpCube extends JavaPlugin implements Listener {
         }
     }
 
+    /**
+     * プラグイン起動時のシーケンス
+     */
+    @Override
+    public void onEnable() {
+        config = new Config( this );
+        getServer().getPluginManager().registerEvents( this, this );
+        
+        if ( config.getRecipe() ) {
+            this.getLogger().info( "ExpCube Recipe Enable." );
+            ItemStack item = new ItemStack(Material.QUARTZ_BLOCK, 1);
+            item = ItemToInventory( item, 0 );
+            ShapedRecipe CubeRecipe = new ShapedRecipe( item );
+            CubeRecipe.shape( "lql", "qrq" ,"lql" );
+            CubeRecipe.setIngredient( 'r', Material.REDSTONE_BLOCK );
+            CubeRecipe.setIngredient( 'l', Material.LAPIS_BLOCK );
+            CubeRecipe.setIngredient( 'q', Material.QUARTZ_BLOCK );
+            getServer().addRecipe( CubeRecipe );
+        } else {
+            this.getLogger().info( "ExpCube Recipe Disable." );
+        }
+    }
+
+    /**
+     * 文字列結合
+     * 
+     * @param StrItem
+     * @return 
+     */
     public String StringBuild( String ... StrItem ) {
         StringBuilder buf = new StringBuilder();
 
@@ -73,7 +105,13 @@ public class ExpCube extends JavaPlugin implements Listener {
         return buf.toString();
     }
     
-    // 0:none 1:normal 2:full
+    /**
+     * デバッグモードに応じた表示切り替え
+     * 
+     * @param msg
+     * @param lvl       0:none 1:normal 2:full
+     * @param player 
+     */
     public void Debug( String msg, int lvl, Player player ) {
         Boolean prtf;
         StringBuilder buf = new StringBuilder();
@@ -106,6 +144,13 @@ public class ExpCube extends JavaPlugin implements Listener {
         }
     }
 
+    /**
+     * ExpCube の生成
+     * 
+     * @param item
+     * @param ench
+     * @return 
+     */
     public ItemStack ItemToInventory( ItemStack item, int ench ) {
         List<String> lores = new ArrayList();
         String MSG;
@@ -134,6 +179,12 @@ public class ExpCube extends JavaPlugin implements Listener {
         return item;
     }
 
+    /**
+     * プレイヤーEXPの計算ルーチン
+     * 
+     * @param p
+     * @param TotalExp 
+     */
     public void setNewExp( Player p, int TotalExp ) {
         Debug( "setNewExp", 2, null );
         p.setLevel( 0 );
@@ -167,7 +218,13 @@ public class ExpCube extends JavaPlugin implements Listener {
 
         p.setExp( xp );
     }
-    
+
+    /**
+     * 現在のプレイヤーEXPを取得する
+     * 
+     * @param p
+     * @return 
+     */
     public int getNowTotalExp( Player p ) {
         //  Debug( "getNowTotalExp", 2, null );
         int lvl = p.getLevel();
@@ -181,11 +238,24 @@ public class ExpCube extends JavaPlugin implements Listener {
         
         return exp;
     }
-    
+
+    /**
+     * プレイヤーのレベルに応じた経験値パーセンテージから演算する
+     * 
+     * @param xp
+     * @param expPercentage
+     * @return 
+     */
     public static int convertExpPercentageToExp( int xp, float expPercentage ) {
         return ( int ) ( Math.round( getExpNeededToLevelUp( xp ) * expPercentage ) );
     }
-    
+
+    /**
+     * 次のレベルアップに必要な経験値の算出
+     * 
+     * @param xp
+     * @return 
+     */
     public static int getExpNeededToLevelUp( int xp ) {
         /* 旧計算式
         if ( xp >= 30 ) return 62 + ( xp - 30 ) * 7;
@@ -200,6 +270,11 @@ public class ExpCube extends JavaPlugin implements Listener {
         return 5 + ( xp * 2 );
     }
 
+    /**
+     * 現状のプレイヤーの経験値情報などのステータス表示
+     * 
+     * @param sender 
+     */
     public void PlayerStatus( CommandSender sender ) {
         Player p = ( Player ) sender;
         sender.sendMessage( ChatColor.AQUA + "Player name " + ChatColor.WHITE + p.getDisplayName() );
@@ -210,6 +285,14 @@ public class ExpCube extends JavaPlugin implements Listener {
         sender.sendMessage( ChatColor.AQUA + "G Total : " + ChatColor.WHITE + p.getTotalExperience() );
     }
 
+    /**
+     * Configで設定された定型文言を差し替える
+     * 
+     * @param p
+     * @param Msg
+     * @param nums
+     * @return 
+     */
     public String ReplaceString( Player p, String Msg, int ... nums ) {
         if ( "".equals( Msg ) ) { return config.ConfigErrorMsg(); }
         
@@ -224,27 +307,12 @@ public class ExpCube extends JavaPlugin implements Listener {
         Msg = Msg.replace( "%$", "§" );
         return Msg;
     }
-    
-    @Override
-    public void onEnable() {
-        config = new Config( this );
-        getServer().getPluginManager().registerEvents( this, this );
-        
-        if ( config.getRecipe() ) {
-            this.getLogger().info( "ExpCube Recipe Enable." );
-            ItemStack item = new ItemStack(Material.QUARTZ_BLOCK, 1);
-            item = ItemToInventory( item, 0 );
-            ShapedRecipe CubeRecipe = new ShapedRecipe( item );
-            CubeRecipe.shape( "lql", "qrq" ,"lql" );
-            CubeRecipe.setIngredient( 'r', Material.REDSTONE_BLOCK );
-            CubeRecipe.setIngredient( 'l', Material.LAPIS_BLOCK );
-            CubeRecipe.setIngredient( 'q', Material.QUARTZ_BLOCK );
-            getServer().addRecipe( CubeRecipe );
-        } else {
-            this.getLogger().info( "ExpCube Recipe Disable." );
-        }
-    }
 
+    /**
+     * 経験値出し入れのメインルーチン
+     * 
+     * @param event 
+     */
     @EventHandler
     public void Click( PlayerInteractEvent event ) {
         Player player = event.getPlayer();
@@ -393,6 +461,15 @@ public class ExpCube extends JavaPlugin implements Listener {
         }
     }
 
+    /**
+     * コマンド入力があった場合に発生するイベント
+     * 
+     * @param sender
+     * @param cmd
+     * @param commandLabel
+     * @param args
+     * @return 
+     */
     @Override
     public boolean onCommand( CommandSender sender,Command cmd, String commandLabel, String[] args ) {
         if ( cmd.getName().equalsIgnoreCase( "cubeget" ) ) {
