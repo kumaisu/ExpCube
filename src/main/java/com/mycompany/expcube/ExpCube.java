@@ -92,55 +92,20 @@ public class ExpCube extends JavaPlugin implements Listener {
     }
 
     /**
-     * 文字列結合
-     * 
-     * @param StrItem
-     * @return 
-     */
-    public String StringBuild( String ... StrItem ) {
-        StringBuilder buf = new StringBuilder();
-
-        for ( String StrItem1 : StrItem ) buf.append( StrItem1 );
- 
-        return buf.toString();
-    }
-    
-    /**
      * デバッグモードに応じた表示切り替え
      * 
      * @param msg
-     * @param lvl       0:none 1:normal 2:full
      * @param player 
+     * @param key 
      */
-    public void Debug( String msg, int lvl, Player player ) {
-        Boolean prtf;
-        StringBuilder buf = new StringBuilder();
+    public void Debug( String msg, Player player, Utility.consoleMode key ) {
+        String printString = Utility.StringBuild( ChatColor.YELLOW.toString(), "(EC:", key.toString(), ") " );
         if ( player != null ) {
-            buf.append( player.getDisplayName() );
-            buf.append( " " );
+            printString = Utility.StringBuild( printString, player.getDisplayName(), " " );
         }
-        switch ( config.getDebug() ) {
-            case 0:
-                prtf = ( lvl == 0 );
-                break;
-            case 1:
-                buf.append( ChatColor.YELLOW );
-                buf.append( "(DB:n) " );
-                prtf = ( lvl == 1 );
-                break;
-            case 2:
-                buf.append( ChatColor.YELLOW );
-                buf.append( "(DB:f) " );
-                prtf = true;
-                break;
-            default:
-                prtf = false;
-        }
-        if ( lvl == 3 ) prtf = true;
-        buf.append( ChatColor.WHITE );
-        buf.append( msg );
-        if ( prtf ) {
-            Bukkit.getServer().getConsoleSender().sendMessage( buf.toString() );
+        printString = Utility.StringBuild( printString, ChatColor.WHITE.toString(), msg );
+        if ( config.isDebugFlag( key ) ) {
+            Bukkit.getServer().getConsoleSender().sendMessage( printString );
         }
     }
 
@@ -186,19 +151,19 @@ public class ExpCube extends JavaPlugin implements Listener {
      * @param TotalExp 
      */
     public void setNewExp( Player p, int TotalExp ) {
-        Debug( "setNewExp", 2, null );
+        Debug( "setNewExp", null, Utility.consoleMode.full );
         p.setLevel( 0 );
         p.setExp( 0 );
 
         for( ;TotalExp > p.getExpToLevel(); )
         {
             Debug(
-                StringBuild(
+                Utility.StringBuild(
                     "Level = ", String.valueOf( p.getLevel() ), 
                     " RemainExp = ", String.valueOf( TotalExp ),
                     " getExpToLevel = ", String.valueOf( p.getExpToLevel() ),
                     " Calc Exp = ", String.valueOf( getExpNeededToLevelUp( p.getLevel() ) )
-                ), 2, null
+                ), null, Utility.consoleMode.full
             );
 
             TotalExp -= p.getExpToLevel();
@@ -207,13 +172,13 @@ public class ExpCube extends JavaPlugin implements Listener {
         
         float xp = ( float ) TotalExp / ( float ) p.getExpToLevel();
         Debug(
-            StringBuild(
+            Utility.StringBuild(
                 "Level = ", String.valueOf( p.getLevel() ),
                 " RemainExp = ", String.valueOf( TotalExp ),
                 " getExpToLevel = ", String.valueOf( p.getExpToLevel() ),
                 " Calc Exp = ", String.valueOf( getExpNeededToLevelUp( p.getLevel() ) ),
                 " SetExpBar = ", String.valueOf( xp )
-            ), 1, null
+            ), null, Utility.consoleMode.normal
         );
 
         p.setExp( xp );
@@ -343,30 +308,36 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                         int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
-                        if ( config.getDebug() == 2 ) { player.sendMessage( StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) ); }
-                        Debug( StringBuild( "Befor Ex", String.valueOf( player.getExp() ), ":Lv", String.valueOf( player.getLevel() ), " > ", String.valueOf( getNowTotalExp( player ) ) ), 1, player );
+                        if ( config.getDebug() == Utility.consoleMode.full ) {
+                            player.sendMessage( Utility.StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) );
+                        }
+                        Debug( Utility.StringBuild( 
+                                "Befor Ex", String.valueOf( player.getExp() ),
+                                ":Lv", String.valueOf( player.getLevel() ),
+                                " > ", String.valueOf( getNowTotalExp( player ) )
+                                ), player, Utility.consoleMode.normal );
 
                         // if( action.equals( Action.RIGHT_CLICK_AIR ) || action.equals( Action.RIGHT_CLICK_BLOCK ) ) {
                         if( action.equals( Action.RIGHT_CLICK_AIR ) ) {
                             if ( player.hasPermission( "ExpCube.set" ) ) {
-                                Debug( StringBuild( "Cube State = ", String.valueOf( ench ) ), 2, null );
+                                Debug( Utility.StringBuild( "Cube State = ", String.valueOf( ench ) ), null, Utility.consoleMode.full );
                                 if ( ench<10 ) {
-                                    Debug( StringBuild( "Player Experience = ", String.valueOf( getNowTotalExp( player ) ) ), 2, null );
+                                    Debug( Utility.StringBuild( "Player Experience = ", String.valueOf( getNowTotalExp( player ) ) ), null, Utility.consoleMode.full );
                                     if ( !( MiniExp>getNowTotalExp( player ) ) ) {
                                         ench++;
 
                                         int OldExp = getNowTotalExp( player );
                                         player.sendMessage( ReplaceString( player, config.getExpToCube(), ench*MiniExp, MaxExp ) );
                                         setNewExp( player, OldExp - MiniExp );
-                                        Debug( StringBuild( "Right Click Cube(", String.valueOf( ench ), ") Exp(", String.valueOf( OldExp ), " => ", String.valueOf( getNowTotalExp( player ) ), ")" ), 1, player );
+                                        Debug( Utility.StringBuild( "Right Click Cube(", String.valueOf( ench ), ") Exp(", String.valueOf( OldExp ), " => ", String.valueOf( getNowTotalExp( player ) ), ")" ), player, Utility.consoleMode.normal );
 
                                     } else {
                                         player.sendMessage( ReplaceString( player, config.getNoEnough() ) );
-                                        Debug( ReplaceString( player, config.getNoEnough() ), 1, player );
+                                        Debug( ReplaceString( player, config.getNoEnough() ), player, Utility.consoleMode.normal );
                                     }
                                 } else {
                                     player.sendMessage( ReplaceString( player, config.getCubeFull() ) );
-                                    Debug( ReplaceString( player, config.getCubeFull() ), 1, player );
+                                    Debug( ReplaceString( player, config.getCubeFull() ), player, Utility.consoleMode.normal );
                                 }
                             } else {
                                 player.sendMessage( ReplaceString( player, config.getNoPermission() ) );
@@ -380,27 +351,27 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     ench--;
 
                                     player.sendMessage( ReplaceString( player, config.getExpFromCube(), ench*MiniExp, MaxExp ) );
-                                    Debug( StringBuild( "Left Click Cube(", String.valueOf( ench ), ") Exp(", String.valueOf( getNowTotalExp( player ) ), ")" ), 1, player );
+                                    Debug( Utility.StringBuild( "Left Click Cube(", String.valueOf( ench ), ") Exp(", String.valueOf( getNowTotalExp( player ) ), ")" ), player, Utility.consoleMode.normal );
 
                                     if ( config.getOrbMode() ) {
-                                        Debug( "OrbMode", 2, null );
+                                        Debug( "OrbMode", null, Utility.consoleMode.full );
                                         //  従来は直接EXPに反映していたが、"修繕"への影響を加味し
                                         //  経験値100のExpOrbをドロップする形式
                                         Location loc = player.getLocation();
                                         ExperienceOrb exp = (ExperienceOrb) loc.getBlock().getWorld().spawn( loc.getBlock().getLocation().add( 0, 0, 0 ), ExperienceOrb.class );
                                         exp.setExperience( MiniExp );
                                     } else {
-                                        Debug( "None OrbMode", 2, null );
+                                        Debug( "None OrbMode", null, Utility.consoleMode.full );
                                         //  従来のEｘｐ直接反映方式
                                         //  オフハンドに修繕アイテムがある場合の処理を追加して対応
                                         int BackExp = MiniExp;
 
                                         //  オフハンドに修繕するアイテムがあるかチェックするとこ
-                                        Debug( "Get off Hand",2, null );
+                                        Debug( "Get off Hand", null, Utility.consoleMode.full );
 
                                         if ( player.getInventory().getItemInOffHand().getType() != Material.AIR ) {
                                             ItemStack offHand = player.getInventory().getItemInOffHand();
-                                            Debug( StringBuild( "OffHand = ", offHand.getItemMeta().getDisplayName() ), 2, null );
+                                            Debug( Utility.StringBuild( "OffHand = ", offHand.getItemMeta().getDisplayName() ), null, Utility.consoleMode.full );
                                             if ( offHand.getItemMeta().getEnchantLevel( Enchantment.MENDING ) > 0 ) {
                                                 short dmg = offHand.getDurability();
                                                 if ( dmg>0 ) {
@@ -411,35 +382,37 @@ public class ExpCube extends JavaPlugin implements Listener {
                                                         BackExp -= dmg;
                                                         dmg = 0;
                                                     }
-                                                    Debug( StringBuild( ChatColor.AQUA.toString(), " Repair Item (", String.valueOf( dmg ), ") to Exp(", String.valueOf( BackExp ), ")" ), 1, player );
+                                                    Debug( Utility.StringBuild( ChatColor.AQUA.toString(), " Repair Item (", String.valueOf( dmg ), ") to Exp(", String.valueOf( BackExp ), ")" ), player, Utility.consoleMode.normal );
                                                     offHand.setDurability( (short) dmg );
                                                 }
                                             }
                                         }
-                                        Debug( "Set Exp " + BackExp, 2, null );
+                                        Debug( "Set Exp " + BackExp, null, Utility.consoleMode.full );
                                         
                                         setNewExp( player, getNowTotalExp( player ) + BackExp );
                                     }
 
                                 } else {
                                     player.sendMessage( ReplaceString( player, config.getCubeEmpty() ) );
-                                    Debug( ReplaceString( player, config.getCubeEmpty() ), 1, player );
+                                    Debug( ReplaceString( player, config.getCubeEmpty() ), player, Utility.consoleMode.normal );
                                 }
                             } else {
                                 player.sendMessage( ReplaceString( player, config.getNoPermission() ) );
                             }
                         }
-                        if ( config.getDebug() == 2 ) { player.sendMessage( StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) ); }
-                        Debug( StringBuild( "After Ex", String.valueOf( player.getExp() ), ":Lv", String.valueOf( player.getLevel() ), " > ", String.valueOf( getNowTotalExp( player ) ) ), 1, player );
+                        if ( config.getDebug() == Utility.consoleMode.full ) {
+                            player.sendMessage( Utility.StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) );
+                        }
+                        Debug( Utility.StringBuild( "After Ex", String.valueOf( player.getExp() ), ":Lv", String.valueOf( player.getLevel() ), " > ", String.valueOf( getNowTotalExp( player ) ) ), player, Utility.consoleMode.normal );
 
                         int amount = item.getAmount();
-                        Debug( StringBuild( "Have Amount is [", String.valueOf( amount ), "]" ), 2, player );
+                        Debug( Utility.StringBuild( "Have Amount is [", String.valueOf( amount ), "]" ), player, Utility.consoleMode.full );
                         item.setAmount( 1 );    // １スタックに強制設定
                         player.getInventory().setItemInMainHand( ItemToInventory( item, ench ) );
 
                         if ( amount>1 ) {
                             item2.setAmount( --amount );               // スタック数を-1セット
-                            Debug( "Add the rest Cube.", 2, player );
+                            Debug( "Add the rest Cube.", player, Utility.consoleMode.full );
                             player.getInventory().addItem( item2 );
                         }
 
@@ -448,7 +421,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         Boolean ActCancel = true;
 
                         if  ( !( block == null ) ) { 
-                            Debug( StringBuild( ChatColor.LIGHT_PURPLE + "Clicked to ", block.getType().toString().toUpperCase() ), 2, player );
+                            Debug( Utility.StringBuild( ChatColor.LIGHT_PURPLE.toString(), "Clicked to ", block.getType().toString().toUpperCase() ), player, Utility.consoleMode.full );
                             ActCancel = !( block.getType().equals( Material.CHEST ) || block.getType().equals( Material.TRAPPED_CHEST ) );
                         }
                         if ( ActCancel ) {
@@ -505,22 +478,13 @@ public class ExpCube extends JavaPlugin implements Listener {
                         break;
                     case "console":
                         if ( args.length>1 ) {
-                            switch ( args[1] ) {
-                                case "full":
-                                    config.setDebug( 2 );
-                                    break;
-                                case "normal":
-                                    config.setDebug( 1 );
-                                    break;
-                                case "none":
-                                    config.setDebug( 0 );
-                                    break;
-                                default:
-                                    sender.sendMessage( ChatColor.RED + "ExpCube Conaole command error !!" );
-                            }
+                            config.setDebug( args[1] );
                         } else sender.sendMessage( "usage: ExpCube console [full/normal/none]" );
-
-                        sender.sendMessage( ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + config.getDebugString( config.getDebug() ) );
+                        sender.sendMessage(
+                                ChatColor.GREEN + "System Debug Mode is [ " +
+                                ChatColor.RED + config.getDebug().toString() +
+                                ChatColor.GREEN + " ]"
+                            );
                     default:
                 }
             } else {

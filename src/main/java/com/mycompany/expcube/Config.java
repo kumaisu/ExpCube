@@ -20,13 +20,13 @@ public class Config {
     
     private boolean OnRecipe;
     private boolean OrbMode;
-    private int DebugFlag;
     private String ExpToCube;
     private String ExpFromCube;
     private String NoEnough;
     private String CubeFull;
     private String CubeEmpty;
     private String Sneaking;
+    private Utility.consoleMode DebugFlag;
     
     public Config(Plugin plugin) {
         this.plugin = plugin;
@@ -62,26 +62,19 @@ public class Config {
         CubeEmpty = config.getString( "messages.CubeEmpty" );
         Sneaking = config.getString( "messages.Sneaking" );
         
-        switch ( config.getString( "Debug" ) ) {
-        case "full":
-            DebugFlag = 2;
-            break;
-        case "normal":
-            DebugFlag = 1;
-            break;
-        case "none":
-            DebugFlag = 0;
-            break;
-        default:
-            DebugFlag = 0;
+        try {
+            DebugFlag = Utility.consoleMode.valueOf( config.getString( "Debug" ) );
+        } catch( IllegalArgumentException e ) {
+            Utility.Prt( null, ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", true );
+            DebugFlag = Utility.consoleMode.normal;
         }
-        
+
         config.options().header("Comment1\nComment2");
     }
     
     public void PrintStatus( CommandSender sender ) {
         sender.sendMessage( ChatColor.AQUA + "=== ExpCube Config Status ===" );
-        sender.sendMessage( ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + getDebugString( DebugFlag ) );
+        sender.sendMessage( ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + DebugFlag.toString() );
         sender.sendMessage( ChatColor.AQUA + "Recipe Mode : " + ChatColor.WHITE + ( OnRecipe ? "true":"false" ) );
         sender.sendMessage( ChatColor.AQUA + "ExpOrb Mode : " + ChatColor.WHITE + ( OrbMode ? "ExpOrg":"Direct") );
         sender.sendMessage( ChatColor.AQUA + "ExpSet: " + ChatColor.WHITE + ( sender.hasPermission( "ExpCube.set" ) ? "true":"false" ) );
@@ -106,25 +99,37 @@ public class Config {
         return OrbMode;
     }
     
-    public int getDebug() {
+    /**
+     * DebugMode を数値で受け取る
+     *
+     * @return 
+     */
+    public Utility.consoleMode getDebug() {
         return DebugFlag;
     }
-    
-    public void setDebug( int num ) {
-        DebugFlag = num;
+
+    /**
+     * 一時的にDebugModeを設定しなおす
+     * ただし、Config.ymlには反映しない
+     *
+     * @param key 
+     */
+    public void setDebug( String key ) {
+        try {
+            DebugFlag = Utility.consoleMode.valueOf( key );
+        } catch( IllegalArgumentException e ) {
+            DebugFlag = Utility.consoleMode.none;
+        }
     }
 
-    public String getDebugString( int lvl ) {
-        switch ( DebugFlag ) {
-            case 0:
-                return "none";
-            case 1:
-                return "normal";
-            case 2:
-                return "full";
-            default:
-                return ChatColor.RED + "Error";
-        }
+    /**
+     * keyに対して、設定されているDebugMode下での可否判定を返す
+     *
+     * @param key
+     * @return 
+     */
+    public boolean isDebugFlag( Utility.consoleMode key ) {
+        return ( DebugFlag.ordinal() >= key.ordinal() );
     }
 
     public String getExpToCube() {
