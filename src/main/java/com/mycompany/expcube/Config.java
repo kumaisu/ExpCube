@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.configuration.file.FileConfiguration;
+import com.mycompany.kumaisulibraries.Utility;
 
 /**
  * 設定をまとめて取り扱う構造体
