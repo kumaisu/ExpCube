@@ -107,6 +107,7 @@ public class ExpCube extends JavaPlugin implements Listener {
         printString = Utility.StringBuild( printString, ChatColor.WHITE.toString(), msg );
         if ( config.isDebugFlag( key ) ) {
             Bukkit.getServer().getConsoleSender().sendMessage( printString );
+        } else {
         }
     }
 
