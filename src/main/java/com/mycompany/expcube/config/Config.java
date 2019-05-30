@@ -1,7 +1,7 @@
 /*
- *  Copyright (c) 2018 Kumaisu. All rights reserved.
+ *  Copyright (c) 2019 sugichan. All rights reserved.
  */
-package com.mycompany.expcube;
+package com.mycompany.expcube.config;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -28,41 +28,41 @@ public class Config {
     private String CubeEmpty;
     private String Sneaking;
     private Utility.consoleMode DebugFlag;
+    private long CoolTick;
+    private int CoolCount;
     
-    public Config(Plugin plugin) {
+    public Config( Plugin plugin ) {
         this.plugin = plugin;
         Bukkit.getServer().getConsoleSender().sendMessage( "Config Loading now..." );
         load();
     }
     
-    /*
+    /**
      * 設定をロードします
+     *
      */
     public void load() {
         // 設定ファイルを保存
         plugin.saveDefaultConfig();
-        if (config != null) { // configが非null == リロードで呼び出された
+        if ( config != null ) { // configが非null == リロードで呼び出された
             plugin.reloadConfig();
         }
         config = plugin.getConfig();
 
-        /*
-        if (!config.contains("Message")) { // 存在チェック
-            plugin.getLogger().info("config.ymlがなんか変です！！");
-        } else if (!config.isString("Message")) {
-            plugin.getLogger().info("config.ymlのMessageがStringじゃないです！！");
-        }
-        */
-
-        OnRecipe = config.getBoolean( "CubeRecipe" );
-        OrbMode = config.getBoolean( "OrbMode" );
-        ExpToCube = config.getString( "messages.ExpToCube" );
+        OnRecipe    = config.getBoolean( "CubeRecipe" );
+        OrbMode     = config.getBoolean( "OrbMode" );
+        ExpToCube   = config.getString( "messages.ExpToCube" );
         ExpFromCube = config.getString( "messages.ExpFromCube" );
-        NoEnough = config.getString( "messages.NoEnough" );
-        CubeFull = config.getString( "messages.CubeFull" );
-        CubeEmpty = config.getString( "messages.CubeEmpty" );
-        Sneaking = config.getString( "messages.Sneaking" );
-        
+        NoEnough    = config.getString( "messages.NoEnough" );
+        CubeFull    = config.getString( "messages.CubeFull" );
+        CubeEmpty   = config.getString( "messages.CubeEmpty" );
+        Sneaking    = config.getString( "messages.Sneaking" );
+
+        //  5tick(0.25秒)ごとにTimerクラスのrunメソッドを実行してね
+        //  Timer 5tick×2回 = 0.5秒です
+        CoolTick    = config.getLong( "CoolTick" );
+        CoolCount   = config.getInt( "CoolCount" );
+       
         try {
             DebugFlag = Utility.consoleMode.valueOf( config.getString( "Debug" ) );
         } catch( IllegalArgumentException e ) {
@@ -86,27 +86,6 @@ public class Config {
         sender.sendMessage( ChatColor.AQUA + "Exp Empty : " + ChatColor.WHITE + CubeEmpty );
         sender.sendMessage( ChatColor.AQUA + "Exp Full  : " + ChatColor.WHITE + CubeFull );
         sender.sendMessage( ChatColor.AQUA + "UseExpCube: " + ChatColor.WHITE + Sneaking );
-    }
-
-    public boolean getRecipe() {
-        return OnRecipe;
-    }
-    
-    public void setOrbMode( boolean flag ) {
-        OrbMode = flag;
-    }
-    
-    public boolean getOrbMode() {
-        return OrbMode;
-    }
-    
-    /**
-     * DebugMode を数値で受け取る
-     *
-     * @return 
-     */
-    public Utility.consoleMode getDebug() {
-        return DebugFlag;
     }
 
     /**
@@ -133,30 +112,6 @@ public class Config {
         return ( DebugFlag.ordinal() >= key.ordinal() );
     }
 
-    public String getExpToCube() {
-        return ExpToCube;
-    }
-    
-    public String getExpFromCube() {
-        return ExpFromCube;
-    }
-    
-    public String getNoEnough() {
-        return NoEnough;
-    }
-    
-    public String getCubeFull() {
-        return CubeFull;
-    }
-    
-    public String getCubeEmpty() {
-        return CubeEmpty;
-    }
-
-    public String getSneaking() {
-        return Sneaking;
-    }
-    
     public String getNoPermission() {
         return config.getString( "messages.NoPermission" );
     }
@@ -185,20 +140,60 @@ public class Config {
     public String InventoryFullMsg() {
         return config.getString( "messages.InvFull" );
     }
+
+    public boolean getRecipe() {
+        return OnRecipe;
+    }
+    
+    public void setOrbMode( boolean flag ) {
+        OrbMode = flag;
+    }
+    
+    public boolean getOrbMode() {
+        return OrbMode;
+    }
+    
+    /**
+     * DebugMode を数値で受け取る
+     *
+     * @return 
+     */
+    public Utility.consoleMode getDebug() {
+        return DebugFlag;
+    }
+
+
+    public String getExpToCube() {
+        return ExpToCube;
+    }
+    
+    public String getExpFromCube() {
+        return ExpFromCube;
+    }
+    
+    public String getNoEnough() {
+        return NoEnough;
+    }
+    
+    public String getCubeFull() {
+        return CubeFull;
+    }
+    
+    public String getCubeEmpty() {
+        return CubeEmpty;
+    }
+
+    public String getSneaking() {
+        return Sneaking;
+    }
     
     //  5tick(0.25秒)ごとにTimerクラスのrunメソッドを実行してね
     //  Timer 5tick×2回 = 0.5秒です
     public long CoolTick() {
-        return config.getLong( "CoolTick" );
+        return CoolTick;
     }
     
     public int CoolCount() {
-        return config.getInt( "CoolCount" );
+        return CoolCount;
     }
-    /*
-    public Map<String, String> getMapKeys() {
-        return mapKeys;
-    }
-    */
-
 }
