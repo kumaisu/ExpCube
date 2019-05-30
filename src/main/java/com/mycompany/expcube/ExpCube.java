@@ -48,12 +48,12 @@ public class ExpCube extends JavaPlugin implements Listener {
     private class Timer extends BukkitRunnable{
         int time;//秒数
         JavaPlugin plugin;//BukkitのAPIにアクセスするためのJavaPlugin
-        
+
         public Timer(JavaPlugin plugin ,int i) {
             this.time = i;
             this.plugin = plugin;
         }
-        
+
         @Override
         public void run() {
             if( time <= 0 ){
@@ -77,7 +77,7 @@ public class ExpCube extends JavaPlugin implements Listener {
     public void onEnable() {
         config = new Config( this );
         getServer().getPluginManager().registerEvents( this, this );
-        
+
         if ( config.getRecipe() ) {
             this.getLogger().info( "ExpCube Recipe Enable." );
             ItemStack item = new ItemStack(Material.QUARTZ_BLOCK, 1);
@@ -95,26 +95,25 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     /**
      * デバッグモードに応じた表示切り替え
-     * 
-     * @param msg
+     *
+     * @param msg 
      * @param player 
      * @param key 
      */
     public void Debug( String msg, Player player, Utility.consoleMode key ) {
-        String printString = Utility.StringBuild( ChatColor.YELLOW.toString(), "(EC:", key.toString(), ") " );
-        if ( player != null ) {
-            printString = Utility.StringBuild( printString, player.getDisplayName(), " " );
-        }
-        printString = Utility.StringBuild( printString, ChatColor.WHITE.toString(), msg );
         if ( config.isDebugFlag( key ) ) {
-            Bukkit.getServer().getConsoleSender().sendMessage( printString );
-        } else {
+            String printString = Utility.StringBuild( ChatColor.YELLOW.toString(), "(EC:", key.toString(), ") " );
+            if ( player != null ) {
+                printString = Utility.StringBuild( printString, player.getDisplayName(), " " );
+            }
+            printString = Utility.StringBuild( printString, ChatColor.WHITE.toString(), msg );
+            Utility.Prt( printString );
         }
     }
 
     /**
      * ExpCube の生成
-     * 
+     *
      * @param item
      * @param ench
      * @return 
@@ -122,7 +121,7 @@ public class ExpCube extends JavaPlugin implements Listener {
     public ItemStack ItemToInventory( ItemStack item, int ench ) {
         List<String> lores = new ArrayList();
         String MSG;
-        
+
         if ( ench>0 ) {
             MSG = "§f[";
             for ( int i=0; i<10; i++) { MSG += ( i<ench ) ? "§a§l■" : "§f§l□" ; }
@@ -135,7 +134,7 @@ public class ExpCube extends JavaPlugin implements Listener {
             lores.add( ReplaceString( (Player)null, config.ZeroCubeMsg( 2 ) ) );
             lores.add( ReplaceString( (Player)null, config.ZeroCubeMsg( 3 ) ) );
         }
-        
+
         ItemMeta im = item.getItemMeta();   //ItemStackから、ItemMetaを取得します。
         im.setDisplayName( "§aExpCube" );  //Item名を設定
         im.setLore( lores );                //loreを設定します。
@@ -143,13 +142,13 @@ public class ExpCube extends JavaPlugin implements Listener {
         item.setItemMeta(im);               //元のItemStackに、変更したItemMetaを設定します。
 
         item.addUnsafeEnchantment( Enchantment.PROTECTION_ENVIRONMENTAL, ench );
-                    
+
         return item;
     }
 
     /**
      * プレイヤーEXPの計算ルーチン
-     * 
+     *
      * @param p
      * @param TotalExp 
      */
@@ -162,7 +161,7 @@ public class ExpCube extends JavaPlugin implements Listener {
         {
             Debug(
                 Utility.StringBuild(
-                    "Level = ", String.valueOf( p.getLevel() ), 
+                    "Level = ", String.valueOf( p.getLevel() ),
                     " RemainExp = ", String.valueOf( TotalExp ),
                     " getExpToLevel = ", String.valueOf( p.getExpToLevel() ),
                     " Calc Exp = ", String.valueOf( getExpNeededToLevelUp( p.getLevel() ) )
@@ -172,7 +171,7 @@ public class ExpCube extends JavaPlugin implements Listener {
             TotalExp -= p.getExpToLevel();
             p.setLevel( p.getLevel() + 1 );
         }
-        
+
         float xp = ( float ) TotalExp / ( float ) p.getExpToLevel();
         Debug(
             Utility.StringBuild(
@@ -189,7 +188,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     /**
      * 現在のプレイヤーEXPを取得する
-     * 
+     *
      * @param p
      * @return 
      */
@@ -197,19 +196,19 @@ public class ExpCube extends JavaPlugin implements Listener {
         //  Debug( "getNowTotalExp", 2, null );
         int lvl = p.getLevel();
         int exp = convertExpPercentageToExp( lvl, p.getExp() );
-        
+
         for( ; lvl>0; ) {
             //  現在のレベルになるのに必要な経験値なので、Lv-1として算出
             exp += getExpNeededToLevelUp( lvl - 1 );
             lvl--;
         }
-        
+
         return exp;
     }
 
     /**
      * プレイヤーのレベルに応じた経験値パーセンテージから演算する
-     * 
+     *
      * @param xp
      * @param expPercentage
      * @return 
@@ -220,7 +219,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     /**
      * 次のレベルアップに必要な経験値の算出
-     * 
+     *
      * @param xp
      * @return 
      */
@@ -240,7 +239,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     /**
      * 現状のプレイヤーの経験値情報などのステータス表示
-     * 
+     *
      * @param sender 
      */
     public void PlayerStatus( CommandSender sender ) {
@@ -255,7 +254,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     /**
      * Configで設定された定型文言を差し替える
-     * 
+     *
      * @param p
      * @param Msg
      * @param nums
@@ -263,7 +262,7 @@ public class ExpCube extends JavaPlugin implements Listener {
      */
     public String ReplaceString( Player p, String Msg, int ... nums ) {
         if ( "".equals( Msg ) ) { return config.ConfigErrorMsg(); }
-        
+
         if ( p != null ) {
             Msg = Msg.replace( "%player%", p.getName() );
             Msg = Msg.replace( "%TotalExp%", String.valueOf( getNowTotalExp( p ) ) );
@@ -278,7 +277,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     /**
      * 経験値出し入れのメインルーチン
-     * 
+     *
      * @param event 
      */
     @EventHandler
@@ -314,7 +313,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         if ( config.getDebug() == Utility.consoleMode.full ) {
                             player.sendMessage( Utility.StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) );
                         }
-                        Debug( Utility.StringBuild( 
+                        Debug( Utility.StringBuild(
                                 "Befor Ex", String.valueOf( player.getExp() ),
                                 ":Lv", String.valueOf( player.getLevel() ),
                                 " > ", String.valueOf( getNowTotalExp( player ) )
@@ -391,7 +390,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                             }
                                         }
                                         Debug( "Set Exp " + BackExp, null, Utility.consoleMode.full );
-                                        
+
                                         setNewExp( player, getNowTotalExp( player ) + BackExp );
                                     }
 
@@ -423,7 +422,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         Block block = event.getClickedBlock();
                         Boolean ActCancel = true;
 
-                        if  ( !( block == null ) ) { 
+                        if  ( !( block == null ) ) {
                             Debug( Utility.StringBuild( ChatColor.LIGHT_PURPLE.toString(), "Clicked to ", block.getType().toString().toUpperCase() ), player, Utility.consoleMode.full );
                             ActCancel = !( block.getType().equals( Material.CHEST ) || block.getType().equals( Material.TRAPPED_CHEST ) );
                         }
@@ -439,7 +438,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
     /**
      * コマンド入力があった場合に発生するイベント
-     * 
+     *
      * @param sender
      * @param cmd
      * @param commandLabel
@@ -450,13 +449,13 @@ public class ExpCube extends JavaPlugin implements Listener {
     public boolean onCommand( CommandSender sender,Command cmd, String commandLabel, String[] args ) {
         if ( cmd.getName().equalsIgnoreCase( "cubeget" ) ) {
             if ( !( sender instanceof Player ) ) {
-                Bukkit.getServer().getConsoleSender().sendMessage( ReplaceString( (Player)null, config.InsideErrorMsg() ) );
+                Utility.Prt( ReplaceString( (Player)null, config.InsideErrorMsg() ) );
             } else {
                 Player p = (Player)sender;
                 p.sendMessage( ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!" );
 
                 ItemStack is = new ItemStack( Material.QUARTZ_BLOCK, 1 );
-                
+
                 p.getInventory().addItem( ItemToInventory( is, 0 ) );
             }
             return true;
