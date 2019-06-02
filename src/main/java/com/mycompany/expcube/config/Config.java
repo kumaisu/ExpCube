@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import com.mycompany.kumaisulibraries.Utility;
+import com.mycompany.kumaisulibraries.Minecraft;
 
 /**
  * 設定をまとめて取り扱う構造体
@@ -66,7 +67,7 @@ public class Config {
         try {
             DebugFlag = Utility.consoleMode.valueOf( config.getString( "Debug" ) );
         } catch( IllegalArgumentException e ) {
-            Utility.Prt( null, ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", true );
+            Minecraft.Prt( null, ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", true );
             DebugFlag = Utility.consoleMode.normal;
         }
 

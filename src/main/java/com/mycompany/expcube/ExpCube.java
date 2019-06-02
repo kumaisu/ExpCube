@@ -6,7 +6,6 @@ package com.mycompany.expcube;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -28,6 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import com.mycompany.kumaisulibraries.Utility;
+import com.mycompany.kumaisulibraries.Minecraft;
 import com.mycompany.expcube.config.Config;
 
 /**
@@ -107,7 +107,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                 printString = Utility.StringBuild( printString, player.getDisplayName(), " " );
             }
             printString = Utility.StringBuild( printString, ChatColor.WHITE.toString(), msg );
-            Utility.Prt( printString );
+            Minecraft.Prt( printString );
         }
     }
 
@@ -310,7 +310,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                         int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
-                        if ( config.getDebug() == Utility.consoleMode.full ) {
+                        if ( config.isDebugFlag( Utility.consoleMode.full ) ) {
                             player.sendMessage( Utility.StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) );
                         }
                         Debug( Utility.StringBuild(
@@ -402,7 +402,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                 player.sendMessage( ReplaceString( player, config.getNoPermission() ) );
                             }
                         }
-                        if ( config.getDebug() == Utility.consoleMode.full ) {
+                        if ( config.isDebugFlag( Utility.consoleMode.full ) ) {
                             player.sendMessage( Utility.StringBuild( ChatColor.GREEN.toString(), "[ExpCube]", ChatColor.YELLOW.toString(), " Now your Experience is ", String.valueOf( getNowTotalExp( player ) ), "." ) );
                         }
                         Debug( Utility.StringBuild( "After Ex", String.valueOf( player.getExp() ), ":Lv", String.valueOf( player.getLevel() ), " > ", String.valueOf( getNowTotalExp( player ) ) ), player, Utility.consoleMode.normal );
@@ -449,7 +449,7 @@ public class ExpCube extends JavaPlugin implements Listener {
     public boolean onCommand( CommandSender sender,Command cmd, String commandLabel, String[] args ) {
         if ( cmd.getName().equalsIgnoreCase( "cubeget" ) ) {
             if ( !( sender instanceof Player ) ) {
-                Utility.Prt( ReplaceString( (Player)null, config.InsideErrorMsg() ) );
+                Minecraft.Prt( ReplaceString( (Player)null, config.InsideErrorMsg() ) );
             } else {
                 Player p = (Player)sender;
                 p.sendMessage( ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!" );
