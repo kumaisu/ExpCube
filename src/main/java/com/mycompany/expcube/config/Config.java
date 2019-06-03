@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import com.mycompany.kumaisulibraries.Utility;
-import com.mycompany.kumaisulibraries.Minecraft;
+import com.mycompany.expcube.tool.Tools;
 
 /**
  * 設定をまとめて取り扱う構造体
@@ -28,9 +28,10 @@ public class Config {
     private String CubeFull;
     private String CubeEmpty;
     private String Sneaking;
-    private Utility.consoleMode DebugFlag;
     private long CoolTick;
     private int CoolCount;
+
+    public static Utility.consoleMode DebugFlag;
     
     public Config( Plugin plugin ) {
         this.plugin = plugin;
@@ -67,7 +68,7 @@ public class Config {
         try {
             DebugFlag = Utility.consoleMode.valueOf( config.getString( "Debug" ) );
         } catch( IllegalArgumentException e ) {
-            Minecraft.Prt( null, ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", true );
+            Tools.Prt( null, ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", Utility.consoleMode.none );
             DebugFlag = Utility.consoleMode.normal;
         }
 
@@ -104,19 +105,11 @@ public class Config {
     }
 
     /**
-     * keyに対して、設定されているDebugMode下での可否判定を返す
+     * 
      *
-     * @param key
+     * @param line
      * @return 
      */
-    public boolean isDebugFlag( Utility.consoleMode key ) {
-        return ( DebugFlag.ordinal() >= key.ordinal() );
-    }
-
-    public String getNoPermission() {
-        return config.getString( "messages.NoPermission" );
-    }
-    
     public String ZeroCubeMsg( int line ) {
         switch ( line ) {
             case 1:
@@ -130,70 +123,142 @@ public class Config {
         }
     }
     
+    /**
+     * パーミッションが設定されていない時のメッセージ
+     * NoPermission: "%$4貴方には権限がありません"
+     *
+     * @return 
+     */
+    public String getNoPermission() {
+        return config.getString( "messages.NoPermission" );
+    }
+    
+    /**
+     * コンフィグの指定が間違った場合のメッセージ
+     * EC_ERROR: "%$4コンフィグの指定に誤りがあります"
+     *
+     * @return 
+     */
     public String ConfigErrorMsg() {
         return config.getString( "messages.EC_ERROR" );
     }
-    
+
+    /**
+     * コンソール操作不可なものへのメッセージ
+     * insideErr: "%$4このコマンドはゲーム内から実行してください"
+     *
+     * @return 
+     */
     public String InsideErrorMsg() {
         return config.getString( "messages.insideErr" );
     }
     
+    /**
+     * プレイヤーインベントリがmaxの時のメッセージ
+     * InvFull: "%$a[ExpCube] %$4インベントリに空きがありません"
+     *
+     * @return 
+     */
     public String InventoryFullMsg() {
         return config.getString( "messages.InvFull" );
     }
 
-    public boolean getRecipe() {
-        return OnRecipe;
-    }
-    
-    public void setOrbMode( boolean flag ) {
-        OrbMode = flag;
-    }
-    
-    public boolean getOrbMode() {
-        return OrbMode;
-    }
-    
     /**
-     * DebugMode を数値で受け取る
+     * 
      *
      * @return 
      */
-    public Utility.consoleMode getDebug() {
-        return DebugFlag;
+    public boolean getRecipe() {
+        return OnRecipe;
     }
 
+    /**
+     * 
+     *
+     * @param flag 
+     */
+    public void setOrbMode( boolean flag ) {
+        OrbMode = flag;
+    }
 
+    /**
+     * 
+     *
+     * @return 
+     */
+    public boolean getOrbMode() {
+        return OrbMode;
+    }
+
+    /**
+     * 
+     *
+     * @return 
+     */
     public String getExpToCube() {
         return ExpToCube;
     }
-    
+
+    /**
+     * 
+     *
+     * @return 
+     */
     public String getExpFromCube() {
         return ExpFromCube;
     }
-    
+
+    /**
+     * 
+     *
+     * @return 
+     */
     public String getNoEnough() {
         return NoEnough;
     }
-    
+
+    /**
+     * 
+     *
+     * @return 
+     */
     public String getCubeFull() {
         return CubeFull;
     }
-    
+
+    /**
+     * 
+     *
+     * @return 
+     */
     public String getCubeEmpty() {
         return CubeEmpty;
     }
 
+    /**
+     * 
+     *
+     * @return 
+     */
     public String getSneaking() {
         return Sneaking;
     }
     
-    //  5tick(0.25秒)ごとにTimerクラスのrunメソッドを実行してね
-    //  Timer 5tick×2回 = 0.5秒です
+    /**
+     * 5tick(0.25秒)ごとにTimerクラスのrunメソッドを実行してね
+     * Timer 5tick×2回 = 0.5秒です
+     *
+     * @return 
+     */
     public long CoolTick() {
         return CoolTick;
     }
-    
+
+    /**
+     * Tickを何回回すのか
+     *
+     * @return 
+     */
     public int CoolCount() {
         return CoolCount;
     }
