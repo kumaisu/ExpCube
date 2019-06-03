@@ -188,12 +188,14 @@ public class ExpCube extends JavaPlugin implements Listener {
             int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
             if ( Tools.isDebugFlag( Utility.consoleMode.full ) ) {
-                player.sendMessage(
+                Tools.Prt(
+                    player,
                     Utility.StringBuild(
                         ChatColor.GREEN.toString(), "[ExpCube]",
                         ChatColor.YELLOW.toString(), " Now your Experience is ",
                         String.valueOf( ExpCalc.getNowTotalExp( player ) ), "."
-                    )
+                    ),
+                    Utility.consoleMode.max
                 );
             }
             Tools.Prt( 
@@ -222,7 +224,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                             ench++;
 
                             int OldExp = ExpCalc.getNowTotalExp( player );
-                            player.sendMessage( ReplaceString( player, config.getExpToCube(), ench*MiniExp, MaxExp ) );
+                            Tools.Prt( player, ReplaceString( player, config.getExpToCube(), ench*MiniExp, MaxExp ), Utility.consoleMode.max );
                             ExpCalc.setNewExp( player, OldExp - MiniExp );
                             Tools.Prt(
                                 Utility.StringBuild(
@@ -244,7 +246,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                     if ( ench>0 ) {
                         ench--;
 
-                        player.sendMessage( ReplaceString( player, config.getExpFromCube(), ench*MiniExp, MaxExp ) );
+                        Tools.Prt( player, ReplaceString( player, config.getExpFromCube(), ench*MiniExp, MaxExp ), Utility.consoleMode.max );
                         Tools.Prt(
                             Utility.StringBuild(
                                 player.getDisplayName(),
@@ -309,12 +311,14 @@ public class ExpCube extends JavaPlugin implements Listener {
                 } else Tools.Prt( player, ReplaceString( player, config.getNoPermission() ), Utility.consoleMode.full );
             }
             if ( Tools.isDebugFlag( Utility.consoleMode.full ) ) {
-                player.sendMessage(
+                Tools.Prt(
+                    player,
                     Utility.StringBuild(
                         ChatColor.GREEN.toString(), "[ExpCube]",
                         ChatColor.YELLOW.toString(), " Now your Experience is ",
                         String.valueOf( ExpCalc.getNowTotalExp( player ) ), "."
-                    )
+                    ),
+                    Utility.consoleMode.max
                 );
             }
             Tools.Prt(
@@ -370,17 +374,16 @@ public class ExpCube extends JavaPlugin implements Listener {
      */
     @Override
     public boolean onCommand( CommandSender sender,Command cmd, String commandLabel, String[] args ) {
+        Player player = ( ( sender instanceof Player ) ? (Player)sender:null );
+
         if ( cmd.getName().equalsIgnoreCase( "cubeget" ) ) {
-            if ( !( sender instanceof Player ) ) {
-                Tools.Prt( ReplaceString( (Player)null, config.InsideErrorMsg() ) );
+            if ( player == null ) {
+                Tools.Prt( ReplaceString( player, config.InsideErrorMsg() ) );
                 return false;
             } else {
-                Player p = (Player)sender;
-                p.sendMessage( ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!" );
-
+                Tools.Prt( player, ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!", Utility.consoleMode.max );
                 ItemStack is = new ItemStack( Material.QUARTZ_BLOCK, 1 );
-
-                p.getInventory().addItem( ItemToInventory( is, 0 ) );
+                player.getInventory().addItem( ItemToInventory( is, 0 ) );
             }
             return true;
         }
@@ -389,27 +392,29 @@ public class ExpCube extends JavaPlugin implements Listener {
                 switch ( args[0] ) {
                     case "reload":
                         config = new Config( this );
-                        sender.sendMessage( ChatColor.GREEN + "ExpCube Config Reloaded." );
+                        Tools.Prt( player, ChatColor.GREEN + "ExpCube Config Reloaded.", Utility.consoleMode.max );
                         return true;
                     case "status":
-                        config.PrintStatus( sender );
+                        config.PrintStatus( player );
                         return true;
                     case "mode":
                         config.setOrbMode( !config.getOrbMode() );
-                        sender.sendMessage( ChatColor.GREEN + "Change Mode to " + ( config.getOrbMode() ? "ExpOrb":"Direct" ) );
+                        Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( config.getOrbMode() ? "ExpOrb":"Direct" ), Utility.consoleMode.max );
                         return true;
                     case "playerstatus":
                     case "ps":
-                        ExpCalc.PlayerStatus( ( Player )sender );
+                        ExpCalc.PlayerStatus( player );
                         return true;
                     case "console":
                         if ( args.length>1 ) {
                             config.setDebug( args[1] );
-                        } else sender.sendMessage( "usage: ExpCube console [full/normal/none]" );
-                        sender.sendMessage(
+                        } else Tools.Prt( player, "usage: ExpCube console [full/normal/none]", Utility.consoleMode.max );
+                        Tools.Prt(
+                                player,
                                 ChatColor.GREEN + "System Debug Mode is [ " +
                                 ChatColor.RED + Config.DebugFlag.toString() +
-                                ChatColor.GREEN + " ]"
+                                ChatColor.GREEN + " ]",
+                                Utility.consoleMode.max
                             );
                         return true;
                     default:

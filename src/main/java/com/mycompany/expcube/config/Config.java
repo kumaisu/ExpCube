@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import com.mycompany.kumaisulibraries.Utility;
 import com.mycompany.expcube.tool.Tools;
+import org.bukkit.entity.Player;
 
 /**
  * 設定をまとめて取り扱う構造体
@@ -75,19 +76,19 @@ public class Config {
         config.options().header("Comment1\nComment2");
     }
     
-    public void PrintStatus( CommandSender sender ) {
-        sender.sendMessage( ChatColor.AQUA + "=== ExpCube Config Status ===" );
-        sender.sendMessage( ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + DebugFlag.toString() );
-        sender.sendMessage( ChatColor.AQUA + "Recipe Mode : " + ChatColor.WHITE + ( OnRecipe ? "true":"false" ) );
-        sender.sendMessage( ChatColor.AQUA + "ExpOrb Mode : " + ChatColor.WHITE + ( OrbMode ? "ExpOrg":"Direct") );
-        sender.sendMessage( ChatColor.AQUA + "ExpSet: " + ChatColor.WHITE + ( sender.hasPermission( "ExpCube.set" ) ? "true":"false" ) );
-        sender.sendMessage( ChatColor.AQUA + "ExpGet: " + ChatColor.WHITE + ( sender.hasPermission( "ExpCube.get" ) ? "true":"false" ) );
-        sender.sendMessage( ChatColor.AQUA + "ExpToCube : " + ChatColor.WHITE + ExpToCube );
-        sender.sendMessage( ChatColor.AQUA + "ExpfmCube : " + ChatColor.WHITE + ExpFromCube );
-        sender.sendMessage( ChatColor.AQUA + "ExpEnough : " + ChatColor.WHITE + NoEnough );
-        sender.sendMessage( ChatColor.AQUA + "Exp Empty : " + ChatColor.WHITE + CubeEmpty );
-        sender.sendMessage( ChatColor.AQUA + "Exp Full  : " + ChatColor.WHITE + CubeFull );
-        sender.sendMessage( ChatColor.AQUA + "UseExpCube: " + ChatColor.WHITE + Sneaking );
+    public void PrintStatus( Player player ) {
+        Tools.Prt( player, ChatColor.AQUA + "=== ExpCube Config Status ===", Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + DebugFlag.toString(), Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "Recipe Mode : " + ChatColor.WHITE + ( OnRecipe ? "true":"false" ), Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "ExpOrb Mode : " + ChatColor.WHITE + ( OrbMode ? "ExpOrg":"Direct"), Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "ExpSet: " + ChatColor.WHITE + ( player.hasPermission( "ExpCube.set" ) ? "true":"false" ), Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "ExpGet: " + ChatColor.WHITE + ( player.hasPermission( "ExpCube.get" ) ? "true":"false" ), Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "ExpToCube : " + ChatColor.WHITE + ExpToCube, Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "ExpfmCube : " + ChatColor.WHITE + ExpFromCube, Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "ExpEnough : " + ChatColor.WHITE + NoEnough, Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "Exp Empty : " + ChatColor.WHITE + CubeEmpty, Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "Exp Full  : " + ChatColor.WHITE + CubeFull, Utility.consoleMode.max );
+        Tools.Prt( player, ChatColor.AQUA + "UseExpCube: " + ChatColor.WHITE + Sneaking, Utility.consoleMode.max );
     }
 
     /**
