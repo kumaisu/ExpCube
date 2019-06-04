@@ -374,7 +374,7 @@ public class ExpCube extends JavaPlugin implements Listener {
      */
     @Override
     public boolean onCommand( CommandSender sender,Command cmd, String commandLabel, String[] args ) {
-        Player player = ( ( sender instanceof Player ) ? (Player)sender:null );
+        Player player = ( ( sender instanceof Player ) ? (Player)sender:(Player)null );
 
         if ( cmd.getName().equalsIgnoreCase( "cubeget" ) ) {
             if ( player == null ) {
@@ -408,6 +408,12 @@ public class ExpCube extends JavaPlugin implements Listener {
                     case "console":
                         if ( args.length>1 ) {
                             config.setDebug( args[1] );
+                            Tools.Prt( player,
+                                ChatColor.GREEN + "System Debug Mode is [ " +
+                                ChatColor.RED + Config.DebugFlag.toString() +
+                                ChatColor.GREEN + " ]",
+                                ( ( player == null ) ? Utility.consoleMode.none:Utility.consoleMode.max )
+                            );
                         } else Tools.Prt( player, "usage: ExpCube console [full/normal/none]", Utility.consoleMode.max );
                         Tools.Prt(
                                 player,
