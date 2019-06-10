@@ -76,7 +76,7 @@ public class ExpCube extends JavaPlugin implements Listener {
      */
     @Override
     public void onEnable() {
-        Tools.programCode = "LC";
+        Tools.programCode = "EC";
         config = new Config( this );
         getServer().getPluginManager().registerEvents( this, this );
 
