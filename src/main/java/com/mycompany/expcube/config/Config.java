@@ -7,9 +7,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.configuration.file.FileConfiguration;
-import com.mycompany.kumaisulibraries.Utility;
-import com.mycompany.expcube.tool.Tools;
 import org.bukkit.entity.Player;
+import com.mycompany.kumaisulibraries.Tools;
 
 /**
  * 設定をまとめて取り扱う構造体
@@ -31,8 +30,6 @@ public class Config {
     private long CoolTick;
     private int CoolCount;
 
-    public static Utility.consoleMode DebugFlag;
-    
     public Config( Plugin plugin ) {
         this.plugin = plugin;
         Bukkit.getServer().getConsoleSender().sendMessage( "Config Loading now..." );
@@ -66,19 +63,19 @@ public class Config {
         CoolCount   = config.getInt( "CoolCount" );
        
         try {
-            DebugFlag = Utility.consoleMode.valueOf( config.getString( "Debug" ) );
+            Tools.DebugFlag = Tools.consoleMode.valueOf( config.getString( "Debug" ) );
         } catch( IllegalArgumentException e ) {
-            Tools.Prt( null, ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", Utility.consoleMode.none );
-            DebugFlag = Utility.consoleMode.normal;
+            Tools.Prt( null, ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", Tools.consoleMode.none );
+            Tools.DebugFlag = Tools.consoleMode.normal;
         }
 
         config.options().header("Comment1\nComment2");
     }
     
     public void PrintStatus( Player player ) {
-        Utility.consoleMode consolePrintFlag = ( ( player == null ) ? Utility.consoleMode.none:Utility.consoleMode.max );
+        Tools.consoleMode consolePrintFlag = ( ( player == null ) ? Tools.consoleMode.none:Tools.consoleMode.max );
         Tools.Prt( player, ChatColor.AQUA + "=== ExpCube Config Status ===", consolePrintFlag );
-        Tools.Prt( player, ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + DebugFlag.toString(), consolePrintFlag );
+        Tools.Prt( player, ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + Tools.DebugFlag.toString(), consolePrintFlag );
         Tools.Prt( player, ChatColor.AQUA + "Recipe Mode : " + ChatColor.WHITE + ( OnRecipe ? "true":"false" ), consolePrintFlag );
         Tools.Prt( player, ChatColor.AQUA + "ExpOrb Mode : " + ChatColor.WHITE + ( OrbMode ? "ExpOrg":"Direct"), consolePrintFlag );
         if ( player != null ) {
@@ -91,20 +88,6 @@ public class Config {
         Tools.Prt( player, ChatColor.AQUA + "Exp Empty : " + ChatColor.WHITE + CubeEmpty, consolePrintFlag );
         Tools.Prt( player, ChatColor.AQUA + "Exp Full  : " + ChatColor.WHITE + CubeFull, consolePrintFlag );
         Tools.Prt( player, ChatColor.AQUA + "UseExpCube: " + ChatColor.WHITE + Sneaking, consolePrintFlag );
-    }
-
-    /**
-     * 一時的にDebugModeを設定しなおす
-     * ただし、Config.ymlには反映しない
-     *
-     * @param key 
-     */
-    public void setDebug( String key ) {
-        try {
-            DebugFlag = Utility.consoleMode.valueOf( key );
-        } catch( IllegalArgumentException e ) {
-            DebugFlag = Utility.consoleMode.none;
-        }
     }
 
     /**

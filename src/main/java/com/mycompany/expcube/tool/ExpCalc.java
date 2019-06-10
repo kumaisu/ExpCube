@@ -6,6 +6,7 @@ package com.mycompany.expcube.tool;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import com.mycompany.kumaisulibraries.Utility;
+import com.mycompany.kumaisulibraries.Tools;
 
 /**
  *
@@ -20,7 +21,7 @@ public final class ExpCalc {
      * @param TotalExp 
      */
     public static void setNewExp( Player p, int TotalExp ) {
-        Tools.Prt( "setNewExp", Utility.consoleMode.full );
+        Tools.Prt( "setNewExp", Tools.consoleMode.full );
         p.setLevel( 0 );
         p.setExp( 0 );
 
@@ -33,7 +34,7 @@ public final class ExpCalc {
                     " getExpToLevel = ", String.valueOf( p.getExpToLevel() ),
                     " Calc Exp = ", String.valueOf( getExpNeededToLevelUp( p.getLevel() ) )
                 ),
-                Utility.consoleMode.full
+                Tools.consoleMode.full
             );
 
             TotalExp -= p.getExpToLevel();
@@ -49,7 +50,7 @@ public final class ExpCalc {
                 " Calc Exp = ", String.valueOf( getExpNeededToLevelUp( p.getLevel() ) ),
                 " SetExpBar = ", String.valueOf( xp )
             ),
-            Utility.consoleMode.full
+            Tools.consoleMode.full
         );
 
         p.setExp( xp );
@@ -112,11 +113,11 @@ public final class ExpCalc {
      * @param player
      */
     public static void PlayerStatus( Player player ) {
-        Tools.Prt( player, ChatColor.AQUA + "Player name " + ChatColor.WHITE + player.getDisplayName(), Utility.consoleMode.full );
-        Tools.Prt( player, ChatColor.AQUA + "Level   : " + ChatColor.WHITE + player.getLevel(), Utility.consoleMode.full );
-        Tools.Prt( player, ChatColor.AQUA + "Exp     : " + ChatColor.WHITE + player.getExp(), Utility.consoleMode.full );
-        Tools.Prt( player, ChatColor.AQUA + "CalcExp : " + ChatColor.WHITE + convertExpPercentageToExp( player.getLevel(), player.getExp() ), Utility.consoleMode.full );
-        Tools.Prt( player, ChatColor.AQUA + "Total   : " + ChatColor.WHITE + getNowTotalExp( player ), Utility.consoleMode.full );
-        Tools.Prt( player, ChatColor.AQUA + "G Total : " + ChatColor.WHITE + player.getTotalExperience(), Utility.consoleMode.full );
+        Tools.Prt( player, ChatColor.AQUA + "Player name " + ChatColor.WHITE + player.getDisplayName(), Tools.consoleMode.full );
+        Tools.Prt( player, ChatColor.AQUA + "Level   : " + ChatColor.WHITE + player.getLevel(), Tools.consoleMode.full );
+        Tools.Prt( player, ChatColor.AQUA + "Exp     : " + ChatColor.WHITE + player.getExp(), Tools.consoleMode.full );
+        Tools.Prt( player, ChatColor.AQUA + "CalcExp : " + ChatColor.WHITE + convertExpPercentageToExp( player.getLevel(), player.getExp() ), Tools.consoleMode.full );
+        Tools.Prt( player, ChatColor.AQUA + "Total   : " + ChatColor.WHITE + getNowTotalExp( player ), Tools.consoleMode.full );
+        Tools.Prt( player, ChatColor.AQUA + "G Total : " + ChatColor.WHITE + player.getTotalExperience(), Tools.consoleMode.full );
     }
 }

@@ -26,10 +26,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import com.mycompany.kumaisulibraries.Utility;
 import com.mycompany.expcube.config.Config;
 import com.mycompany.expcube.tool.ExpCalc;
-import com.mycompany.expcube.tool.Tools;
+import com.mycompany.kumaisulibraries.Utility;
+import com.mycompany.kumaisulibraries.Tools;
 
 /**
  *
@@ -76,6 +76,7 @@ public class ExpCube extends JavaPlugin implements Listener {
      */
     @Override
     public void onEnable() {
+        Tools.programCode = "LC";
         config = new Config( this );
         getServer().getPluginManager().registerEvents( this, this );
 
@@ -172,7 +173,7 @@ public class ExpCube extends JavaPlugin implements Listener {
         if ( player.isSneaking() ) {
             event.setCancelled( true );
             if ( ( item.getAmount() > 1 ) && ( !Arrays.asList( player.getInventory().getStorageContents() ).contains( null ) ) ) {
-                Tools.Prt( player, ReplaceString( player, config.InventoryFullMsg() ), Utility.consoleMode.full );
+                Tools.Prt( player, ReplaceString( player, config.InventoryFullMsg() ), Tools.consoleMode.full );
                 return;
             }
 
@@ -187,7 +188,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
             int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
 
-            if ( Tools.isDebugFlag( Utility.consoleMode.full ) ) {
+            if ( Tools.isDebugFlag( Tools.consoleMode.full ) ) {
                 Tools.Prt(
                     player,
                     Utility.StringBuild(
@@ -195,7 +196,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         ChatColor.YELLOW.toString(), " Now your Experience is ",
                         String.valueOf( ExpCalc.getNowTotalExp( player ) ), "."
                     ),
-                    Utility.consoleMode.max
+                    Tools.consoleMode.max
                 );
             }
             Tools.Prt( 
@@ -205,7 +206,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                     ":Lv", String.valueOf( player.getLevel() ),
                     " > ", String.valueOf( ExpCalc.getNowTotalExp( player ) )
                 ),
-                Utility.consoleMode.full
+                Tools.consoleMode.full
             );
 
             // if( action.equals( Action.RIGHT_CLICK_AIR ) || action.equals( Action.RIGHT_CLICK_BLOCK ) ) {
@@ -213,18 +214,18 @@ public class ExpCube extends JavaPlugin implements Listener {
                 if ( player.hasPermission( "ExpCube.set" ) ) {
                     Tools.Prt(
                         Utility.StringBuild( "Cube State = ", String.valueOf( ench ) ),
-                        Utility.consoleMode.full
+                        Tools.consoleMode.full
                     );
                     if ( ench<10 ) {
                         Tools.Prt(
                             Utility.StringBuild( "Player Experience = ", String.valueOf( ExpCalc.getNowTotalExp( player ) ) ),
-                            Utility.consoleMode.full
+                            Tools.consoleMode.full
                         );
                         if ( !( MiniExp>ExpCalc.getNowTotalExp( player ) ) ) {
                             ench++;
 
                             int OldExp = ExpCalc.getNowTotalExp( player );
-                            Tools.Prt( player, ReplaceString( player, config.getExpToCube(), ench*MiniExp, MaxExp ), Utility.consoleMode.max );
+                            Tools.Prt( player, ReplaceString( player, config.getExpToCube(), ench*MiniExp, MaxExp ), Tools.consoleMode.max );
                             ExpCalc.setNewExp( player, OldExp - MiniExp );
                             Tools.Prt(
                                 Utility.StringBuild(
@@ -233,11 +234,11 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     ") Exp(", String.valueOf( OldExp ),
                                     " => ", String.valueOf( ExpCalc.getNowTotalExp( player ) ), ")"
                                 ),
-                                Utility.consoleMode.full
+                                Tools.consoleMode.full
                             );
-                        } else Tools.Prt( player, ReplaceString( player, config.getNoEnough() ), Utility.consoleMode.full );
-                    } else Tools.Prt( player, ReplaceString( player, config.getCubeFull() ), Utility.consoleMode.full );
-                } else Tools.Prt( player, ReplaceString( player, config.getNoPermission() ), Utility.consoleMode.full );
+                        } else Tools.Prt( player, ReplaceString( player, config.getNoEnough() ), Tools.consoleMode.full );
+                    } else Tools.Prt( player, ReplaceString( player, config.getCubeFull() ), Tools.consoleMode.full );
+                } else Tools.Prt( player, ReplaceString( player, config.getNoPermission() ), Tools.consoleMode.full );
             }
 
             //  if( action.equals( Action.LEFT_CLICK_AIR ) || ( action.equals( Action.LEFT_CLICK_BLOCK ) ) ) {
@@ -246,31 +247,31 @@ public class ExpCube extends JavaPlugin implements Listener {
                     if ( ench>0 ) {
                         ench--;
 
-                        Tools.Prt( player, ReplaceString( player, config.getExpFromCube(), ench*MiniExp, MaxExp ), Utility.consoleMode.max );
+                        Tools.Prt( player, ReplaceString( player, config.getExpFromCube(), ench*MiniExp, MaxExp ), Tools.consoleMode.max );
                         Tools.Prt(
                             Utility.StringBuild(
                                 player.getDisplayName(),
                                 " Left Click Cube(", String.valueOf( ench ),
                                 ") Exp(", String.valueOf( ExpCalc.getNowTotalExp( player ) ), ")"
                             ),
-                            Utility.consoleMode.full
+                            Tools.consoleMode.full
                         );
 
                         if ( config.getOrbMode() ) {
-                            Tools.Prt( "OrbMode", Utility.consoleMode.full );
+                            Tools.Prt( "OrbMode", Tools.consoleMode.full );
                             //  従来は直接EXPに反映していたが、"修繕"への影響を加味し
                             //  経験値100のExpOrbをドロップする形式
                             Location loc = player.getLocation();
                             ExperienceOrb exp = (ExperienceOrb) loc.getBlock().getWorld().spawn( loc.getBlock().getLocation().add( 0, 0, 0 ), ExperienceOrb.class );
                             exp.setExperience( MiniExp );
                         } else {
-                            Tools.Prt( "None OrbMode", Utility.consoleMode.full );
+                            Tools.Prt( "None OrbMode", Tools.consoleMode.full );
                             //  従来のEｘｐ直接反映方式
                             //  オフハンドに修繕アイテムがある場合の処理を追加して対応
                             int BackExp = MiniExp;
 
                             //  オフハンドに修繕するアイテムがあるかチェックするとこ
-                            Tools.Prt( "Get off Hand", Utility.consoleMode.full );
+                            Tools.Prt( "Get off Hand", Tools.consoleMode.full );
 
                             if ( player.getInventory().getItemInOffHand().getType() != Material.AIR ) {
                                 ItemStack offHand = player.getInventory().getItemInOffHand();
@@ -278,7 +279,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                                     Utility.StringBuild(
                                         "OffHand = ", offHand.getItemMeta().getDisplayName()
                                     ),
-                                    Utility.consoleMode.full
+                                    Tools.consoleMode.full
                                 );
                                 if ( offHand.getItemMeta().getEnchantLevel( Enchantment.MENDING ) > 0 ) {
                                     short dmg = offHand.getDurability();
@@ -297,20 +298,20 @@ public class ExpCube extends JavaPlugin implements Listener {
                                                 String.valueOf( dmg ), ") to Exp(",
                                                 String.valueOf( BackExp ), ")"
                                             ),
-                                            Utility.consoleMode.full
+                                            Tools.consoleMode.full
                                         );
                                         offHand.setDurability( (short) dmg );
                                     }
                                 }
                             }
-                            Tools.Prt( "Set Exp " + BackExp, Utility.consoleMode.full );
+                            Tools.Prt( "Set Exp " + BackExp, Tools.consoleMode.full );
 
                             ExpCalc.setNewExp( player, ExpCalc.getNowTotalExp( player ) + BackExp );
                         }
-                    } else Tools.Prt( player, ReplaceString( player, config.getCubeEmpty() ), Utility.consoleMode.full );
-                } else Tools.Prt( player, ReplaceString( player, config.getNoPermission() ), Utility.consoleMode.full );
+                    } else Tools.Prt( player, ReplaceString( player, config.getCubeEmpty() ), Tools.consoleMode.full );
+                } else Tools.Prt( player, ReplaceString( player, config.getNoPermission() ), Tools.consoleMode.full );
             }
-            if ( Tools.isDebugFlag( Utility.consoleMode.full ) ) {
+            if ( Tools.isDebugFlag( Tools.consoleMode.full ) ) {
                 Tools.Prt(
                     player,
                     Utility.StringBuild(
@@ -318,7 +319,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                         ChatColor.YELLOW.toString(), " Now your Experience is ",
                         String.valueOf( ExpCalc.getNowTotalExp( player ) ), "."
                     ),
-                    Utility.consoleMode.max
+                    Tools.consoleMode.max
                 );
             }
             Tools.Prt(
@@ -328,17 +329,17 @@ public class ExpCube extends JavaPlugin implements Listener {
                     ":Lv", String.valueOf( player.getLevel() ),
                     " > ", String.valueOf( ExpCalc.getNowTotalExp( player ) )
                 ),
-                Utility.consoleMode.full
+                Tools.consoleMode.full
             );
 
             int amount = item.getAmount();
-            Tools.Prt( Utility.StringBuild( player.getDisplayName(), " Have Amount is [", String.valueOf( amount ), "]" ), Utility.consoleMode.full );
+            Tools.Prt( Utility.StringBuild( player.getDisplayName(), " Have Amount is [", String.valueOf( amount ), "]" ), Tools.consoleMode.full );
             item.setAmount( 1 );    // １スタックに強制設定
             player.getInventory().setItemInMainHand( ItemToInventory( item, ench ) );
 
             if ( amount>1 ) {
                 item2.setAmount( --amount );               // スタック数を-1セット
-                Tools.Prt( player.getDisplayName() + "Add the rest Cube.", Utility.consoleMode.full );
+                Tools.Prt( player.getDisplayName() + "Add the rest Cube.", Tools.consoleMode.full );
                 player.getInventory().addItem( item2 );
             }
         } else {
@@ -352,12 +353,12 @@ public class ExpCube extends JavaPlugin implements Listener {
                         ChatColor.LIGHT_PURPLE.toString(), " Clicked to ",
                         block.getType().toString().toUpperCase()
                     ),
-                    Utility.consoleMode.full
+                    Tools.consoleMode.full
                 );
                 ActCancel = !( block.getType().equals( Material.CHEST ) || block.getType().equals( Material.TRAPPED_CHEST ) );
             }
             if ( ActCancel ) {
-                Tools.Prt( player, ReplaceString( player, config.getSneaking() ), Utility.consoleMode.full );
+                Tools.Prt( player, ReplaceString( player, config.getSneaking() ), Tools.consoleMode.full );
                 event.setCancelled( true );
             }
         }
@@ -381,7 +382,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                 Tools.Prt( ReplaceString( player, config.InsideErrorMsg() ) );
                 return false;
             } else {
-                Tools.Prt( player, ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!", Utility.consoleMode.max );
+                Tools.Prt( player, ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!", Tools.consoleMode.max );
                 ItemStack is = new ItemStack( Material.QUARTZ_BLOCK, 1 );
                 player.getInventory().addItem( ItemToInventory( is, 0 ) );
             }
@@ -392,14 +393,14 @@ public class ExpCube extends JavaPlugin implements Listener {
                 switch ( args[0] ) {
                     case "reload":
                         config = new Config( this );
-                        Tools.Prt( player, ChatColor.GREEN + "ExpCube Config Reloaded.", Utility.consoleMode.max );
+                        Tools.Prt( player, ChatColor.GREEN + "ExpCube Config Reloaded.", Tools.consoleMode.max );
                         return true;
                     case "status":
                         config.PrintStatus( player );
                         return true;
                     case "mode":
                         config.setOrbMode( !config.getOrbMode() );
-                        Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( config.getOrbMode() ? "ExpOrb":"Direct" ), Utility.consoleMode.max );
+                        Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( config.getOrbMode() ? "ExpOrb":"Direct" ), Tools.consoleMode.max );
                         return true;
                     case "playerstatus":
                     case "ps":
@@ -407,21 +408,14 @@ public class ExpCube extends JavaPlugin implements Listener {
                         return true;
                     case "console":
                         if ( args.length>1 ) {
-                            config.setDebug( args[1] );
-                            Tools.Prt( player,
-                                ChatColor.GREEN + "System Debug Mode is [ " +
-                                ChatColor.RED + Config.DebugFlag.toString() +
-                                ChatColor.GREEN + " ]",
-                                ( ( player == null ) ? Utility.consoleMode.none:Utility.consoleMode.max )
-                            );
-                        } else Tools.Prt( player, "usage: ExpCube console [full/normal/none]", Utility.consoleMode.max );
-                        Tools.Prt(
-                                player,
-                                ChatColor.GREEN + "System Debug Mode is [ " +
-                                ChatColor.RED + Config.DebugFlag.toString() +
-                                ChatColor.GREEN + " ]",
-                                Utility.consoleMode.max
-                            );
+                            Tools.setDebug( args[1] );
+                        } else Tools.Prt( player, "usage: ExpCube console [full/normal/none]", Tools.consoleMode.max );
+                        Tools.Prt( player,
+                            ChatColor.GREEN + "System Debug Mode is [ " +
+                            ChatColor.RED + Tools.DebugFlag.toString() +
+                            ChatColor.GREEN + " ]",
+                            ( ( player == null ) ? Tools.consoleMode.none:Tools.consoleMode.max )
+                        );
                         return true;
                     default:
                 }
