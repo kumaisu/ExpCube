@@ -3,7 +3,6 @@
  */
 package com.mycompany.expcube.config;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -32,7 +31,7 @@ public class Config {
 
     public Config( Plugin plugin ) {
         this.plugin = plugin;
-        Bukkit.getServer().getConsoleSender().sendMessage( "Config Loading now..." );
+        Tools.Prt( "Config Loading now..." );
         load();
     }
     
@@ -44,6 +43,7 @@ public class Config {
         // 設定ファイルを保存
         plugin.saveDefaultConfig();
         if ( config != null ) { // configが非null == リロードで呼び出された
+            Tools.Prt( "Config Reloading now..." );
             plugin.reloadConfig();
         }
         config = plugin.getConfig();
