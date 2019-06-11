@@ -1,6 +1,6 @@
 main: com.mycompany.expcube.ExpCube
 name: ExpCube
-version: 0.1
+version: 0.3
 description: Exp Cube plugin
 author: Kumaisu
 database: true
