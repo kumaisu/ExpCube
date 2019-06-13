@@ -81,7 +81,7 @@ public class ExpCube extends JavaPlugin implements Listener {
         config = new Config( this );
         getServer().getPluginManager().registerEvents( this, this );
 
-        if ( config.getRecipe() ) {
+        if ( Config.OnRecipe ) {
             this.getLogger().info( "ExpCube Recipe Enable." );
             ItemStack item = new ItemStack(Material.QUARTZ_BLOCK, 1);
             item = ItemToInventory( item, 0 );
@@ -183,7 +183,7 @@ public class ExpCube extends JavaPlugin implements Listener {
             //  false なら、true にしてタイマー起動後、処理
             if ( ClickFlag ) { return; }
             ClickFlag = true;
-            task = this.getServer().getScheduler().runTaskTimer( this, new Timer( this ,config.CoolCount() ), 0L, config.CoolTick() );
+            task = this.getServer().getScheduler().runTaskTimer( this, new Timer( this , Config.CoolCount ), 0L, Config.CoolTick );
 
             player.getInventory().setItemInMainHand( null );
 
@@ -226,7 +226,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                             ench++;
 
                             int OldExp = ExpCalc.getNowTotalExp( player );
-                            Tools.Prt( player, ReplaceString( player, config.getExpToCube(), ench*MiniExp, MaxExp ), consoleMode.max, programCode );
+                            Tools.Prt( player, ReplaceString( player, Config.ExpToCube, ench*MiniExp, MaxExp ), consoleMode.max, programCode );
                             ExpCalc.setNewExp( player, OldExp - MiniExp );
                             Tools.Prt(
                                 Utility.StringBuild(
@@ -237,8 +237,8 @@ public class ExpCube extends JavaPlugin implements Listener {
                                 ),
                                 consoleMode.full, programCode
                             );
-                        } else Tools.Prt( player, ReplaceString( player, config.getNoEnough() ), consoleMode.full, programCode );
-                    } else Tools.Prt( player, ReplaceString( player, config.getCubeFull() ), consoleMode.full, programCode );
+                        } else Tools.Prt( player, ReplaceString( player, Config.NoEnough ), consoleMode.full, programCode );
+                    } else Tools.Prt( player, ReplaceString( player, Config.CubeFull ), consoleMode.full, programCode );
                 } else Tools.Prt( player, ReplaceString( player, config.getNoPermission() ), consoleMode.full, programCode );
             }
 
@@ -248,7 +248,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                     if ( ench>0 ) {
                         ench--;
 
-                        Tools.Prt( player, ReplaceString( player, config.getExpFromCube(), ench*MiniExp, MaxExp ), consoleMode.max, programCode );
+                        Tools.Prt( player, ReplaceString( player, Config.ExpFromCube, ench*MiniExp, MaxExp ), consoleMode.max, programCode );
                         Tools.Prt(
                             Utility.StringBuild(
                                 player.getDisplayName(),
@@ -258,7 +258,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                             consoleMode.full, programCode
                         );
 
-                        if ( config.getOrbMode() ) {
+                        if ( Config.OrbMode ) {
                             Tools.Prt( "OrbMode", consoleMode.full, programCode );
                             //  従来は直接EXPに反映していたが、"修繕"への影響を加味し
                             //  経験値100のExpOrbをドロップする形式
@@ -309,7 +309,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
                             ExpCalc.setNewExp( player, ExpCalc.getNowTotalExp( player ) + BackExp );
                         }
-                    } else Tools.Prt( player, ReplaceString( player, config.getCubeEmpty() ), consoleMode.full, programCode );
+                    } else Tools.Prt( player, ReplaceString( player, Config.CubeEmpty ), consoleMode.full, programCode );
                 } else Tools.Prt( player, ReplaceString( player, config.getNoPermission() ), consoleMode.full, programCode );
             }
             if ( Tools.isDebugFlag( consoleMode.full, programCode ) ) {
@@ -359,7 +359,7 @@ public class ExpCube extends JavaPlugin implements Listener {
                 ActCancel = !( block.getType().equals( Material.CHEST ) || block.getType().equals( Material.TRAPPED_CHEST ) );
             }
             if ( ActCancel ) {
-                Tools.Prt( player, ReplaceString( player, config.getSneaking() ), consoleMode.full, programCode );
+                Tools.Prt( player, ReplaceString( player, Config.Sneaking ), consoleMode.full, programCode );
                 event.setCancelled( true );
             }
         }
@@ -400,8 +400,8 @@ public class ExpCube extends JavaPlugin implements Listener {
                         config.PrintStatus( player );
                         return true;
                     case "mode":
-                        config.setOrbMode( !config.getOrbMode() );
-                        Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( config.getOrbMode() ? "ExpOrb":"Direct" ), consoleMode.max, programCode );
+                        Config.OrbMode = !Config.OrbMode;
+                        Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( Config.OrbMode ? "ExpOrb":"Direct" ), consoleMode.max, programCode );
                         return true;
                     case "playerstatus":
                     case "ps":

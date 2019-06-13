@@ -21,16 +21,16 @@ public class Config {
     private final Plugin plugin;
     private FileConfiguration config = null;
     
-    private boolean OnRecipe;
-    private boolean OrbMode;
-    private String ExpToCube;
-    private String ExpFromCube;
-    private String NoEnough;
-    private String CubeFull;
-    private String CubeEmpty;
-    private String Sneaking;
-    private long CoolTick;
-    private int CoolCount;
+    public static boolean OnRecipe;
+    public static boolean OrbMode;
+    public static String ExpToCube;
+    public static String ExpFromCube;
+    public static String NoEnough;
+    public static String CubeFull;
+    public static String CubeEmpty;
+    public static String Sneaking;
+    public static long CoolTick;
+    public static int CoolCount;
 
     public Config( Plugin plugin ) {
         this.plugin = plugin;
@@ -153,105 +153,5 @@ public class Config {
      */
     public String InventoryFullMsg() {
         return config.getString( "messages.InvFull" );
-    }
-
-    /**
-     * 
-     *
-     * @return 
-     */
-    public boolean getRecipe() {
-        return OnRecipe;
-    }
-
-    /**
-     * 
-     *
-     * @param flag 
-     */
-    public void setOrbMode( boolean flag ) {
-        OrbMode = flag;
-    }
-
-    /**
-     * 
-     *
-     * @return 
-     */
-    public boolean getOrbMode() {
-        return OrbMode;
-    }
-
-    /**
-     * 
-     *
-     * @return 
-     */
-    public String getExpToCube() {
-        return ExpToCube;
-    }
-
-    /**
-     * 
-     *
-     * @return 
-     */
-    public String getExpFromCube() {
-        return ExpFromCube;
-    }
-
-    /**
-     * 
-     *
-     * @return 
-     */
-    public String getNoEnough() {
-        return NoEnough;
-    }
-
-    /**
-     * 
-     *
-     * @return 
-     */
-    public String getCubeFull() {
-        return CubeFull;
-    }
-
-    /**
-     * 
-     *
-     * @return 
-     */
-    public String getCubeEmpty() {
-        return CubeEmpty;
-    }
-
-    /**
-     * 
-     *
-     * @return 
-     */
-    public String getSneaking() {
-        return Sneaking;
-    }
-    
-    /**
-     * 5tick(0.25秒)ごとにTimerクラスのrunメソッドを実行してね
-     * Timer 5tick×2回 = 0.5秒です
-     *
-     * @return 
-     */
-    public long CoolTick() {
-        return CoolTick;
-    }
-
-    /**
-     * Tickを何回回すのか
-     *
-     * @return 
-     */
-    public int CoolCount() {
-        return CoolCount;
     }
 }
