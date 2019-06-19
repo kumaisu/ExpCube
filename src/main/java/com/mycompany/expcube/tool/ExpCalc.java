@@ -3,12 +3,12 @@
  */
 package com.mycompany.expcube.tool;
 
-import static com.mycompany.expcube.config.Config.programCode;
-import static com.mycompany.kumaisulibraries.Tools.consoleMode;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import com.mycompany.kumaisulibraries.Utility;
 import com.mycompany.kumaisulibraries.Tools;
+import static com.mycompany.expcube.config.Config.programCode;
+import static com.mycompany.kumaisulibraries.Tools.consoleMode;
 
 /**
  *

@@ -22,6 +22,9 @@ CoolCount: 1
 
 #   Action Messages
 messages:
+  ZeroCube1: "%$eスニーク%$fしながら"
+  ZeroCube2: "%$b右クリック%$fで貯める"
+  ZeroCube3: "%$b左クリック%$fで取り出す"
   EC_ERROR: "%$4コンフィグの指定に誤りがあります"
   InvFull: "%$a[ExpCube] %$4インベントリに空きがありません"
   ExpToCube: "%$a[ExpCube] %$b経験値を100キューブに入れました %$f( %minExp%/%maxExp% )"
@@ -31,9 +34,6 @@ messages:
   CubeEmpty: "%$a[ExpCube] %$4このキューブは空です"
   Sneaking: "%$a[ExpCube] %$eスニークしながら使って下さい"
   NoPermission: "%$4貴方には権限がありません"
-  ZeroCube1: "%$eスニーク%$fしながら"
-  ZeroCube2: "%$b右クリック%$fで貯める"
-  ZeroCube3: "%$b左クリック%$fで取り出す"
   insideErr: "%$4このコマンドはゲーム内から実行してください"
 #  EC_ERROR: "%$4ExpCube Config Error"
 #  InvFull: "%$a[ExpCube] %$4There is no space in the inventory"

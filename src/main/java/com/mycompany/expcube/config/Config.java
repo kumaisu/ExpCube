@@ -7,10 +7,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import com.mycompany.kumaisulibraries.Tools;
 import static com.mycompany.kumaisulibraries.Tools.consoleMode;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 設定をまとめて取り扱う構造体
@@ -41,7 +42,7 @@ public class Config {
     public static String ConfigErrorMsg;
     public static String InsideErrorMsg;
     public static String InventoryFullMsg;
-    public static List<String> ZeroCubeMsg;
+    public static List<String> ZeroCubeMsg = new ArrayList<>();
 
     public Config( Plugin plugin ) {
         this.plugin = plugin;
@@ -82,10 +83,11 @@ public class Config {
         InsideErrorMsg      = config.getString( "messages.insideErr" );
         InventoryFullMsg    = config.getString( "messages.InvFull" );
 
-        ZeroCubeMsg = new ArrayList<>();
-        ZeroCubeMsg.add( config.getString( "messages.ZeroCube1" ) );
-        ZeroCubeMsg.add( config.getString( "messages.ZeroCube2" ) );
-        ZeroCubeMsg.add( config.getString( "messages.ZeroCube3" ) );
+        ZeroCubeMsg = new ArrayList<>( Arrays.asList(
+            config.getString( "messages.ZeroCube1" ),
+            config.getString( "messages.ZeroCube2" ),
+            config.getString( "messages.ZeroCube3" )
+        ) );
         
         consoleMode DebugFlag;
         try {
@@ -99,21 +101,24 @@ public class Config {
         config.options().header("Comment1\nComment2");
     }
     
-    public void PrintStatus( Player player ) {
-        consoleMode consolePrintFlag = ( ( player == null ) ? consoleMode.none:consoleMode.max );
-        Tools.Prt( player, ChatColor.AQUA + "=== ExpCube Config Status ===", consolePrintFlag, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "Degub Mode : " + ChatColor.WHITE + Tools.consoleFlag.get( programCode ).toString(), consolePrintFlag, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "Recipe Mode : " + ChatColor.WHITE + ( OnRecipe ? "true":"false" ), consolePrintFlag, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "ExpOrb Mode : " + ChatColor.WHITE + ( OrbMode ? "ExpOrg":"Direct"), consolePrintFlag, programCode );
+    public static void PrintStatus( Player player ) {
+        Tools.Prt( player, ChatColor.GREEN + "=== ExpCube Config Status ===", programCode );
+        Tools.Prt( player, ChatColor.WHITE + "Degub Mode : " + ChatColor.YELLOW + Tools.consoleFlag.get( programCode ).toString(), programCode );
+        Tools.Prt( player, ChatColor.WHITE + "Recipe Mode : " + ChatColor.YELLOW + ( OnRecipe ? "true":"false" ), programCode );
+        Tools.Prt( player, ChatColor.WHITE + "ExpOrb Mode : " + ChatColor.YELLOW + ( OrbMode ? "ExpOrg":"Direct"), programCode );
         if ( player != null ) {
-            Tools.Prt( player, ChatColor.AQUA + "ExpSet: " + ChatColor.WHITE + ( player.hasPermission( "ExpCube.set" ) ? "true":"false" ), consolePrintFlag, programCode );
-            Tools.Prt( player, ChatColor.AQUA + "ExpGet: " + ChatColor.WHITE + ( player.hasPermission( "ExpCube.get" ) ? "true":"false" ), consolePrintFlag, programCode );
+            Tools.Prt( player, ChatColor.WHITE + "ExpSet: " + ChatColor.YELLOW + ( player.hasPermission( "ExpCube.set" ) ? "true":"false" ), programCode );
+            Tools.Prt( player, ChatColor.WHITE + "ExpGet: " + ChatColor.YELLOW + ( player.hasPermission( "ExpCube.get" ) ? "true":"false" ), programCode );
         }
-        Tools.Prt( player, ChatColor.AQUA + "ExpToCube : " + ChatColor.WHITE + ExpToCube, consolePrintFlag, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "ExpfmCube : " + ChatColor.WHITE + ExpFromCube, consolePrintFlag, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "ExpEnough : " + ChatColor.WHITE + NoEnough, consolePrintFlag, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "Exp Empty : " + ChatColor.WHITE + CubeEmpty, consolePrintFlag, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "Exp Full  : " + ChatColor.WHITE + CubeFull, consolePrintFlag, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "UseExpCube: " + ChatColor.WHITE + Sneaking, consolePrintFlag, programCode );
+        Tools.Prt( player, ChatColor.WHITE + "ExpToCube : " + ChatColor.YELLOW + ExpToCube, programCode );
+        Tools.Prt( player, ChatColor.WHITE + "ExpfmCube : " + ChatColor.YELLOW + ExpFromCube, programCode );
+        Tools.Prt( player, ChatColor.WHITE + "ExpEnough : " + ChatColor.YELLOW + NoEnough, programCode );
+        Tools.Prt( player, ChatColor.WHITE + "Exp Empty : " + ChatColor.YELLOW + CubeEmpty, programCode );
+        Tools.Prt( player, ChatColor.WHITE + "Exp Full  : " + ChatColor.YELLOW + CubeFull, programCode );
+        Tools.Prt( player, ChatColor.WHITE + "UseExpCube: " + ChatColor.YELLOW + Sneaking, programCode );
+        Tools.Prt( player, ChatColor.WHITE + "ZeroMsg(1): " + ChatColor.YELLOW + ZeroCubeMsg.get( 0 ), programCode );
+        Tools.Prt( player, ChatColor.WHITE + "ZeroMsg(2): " + ChatColor.YELLOW + ZeroCubeMsg.get( 1 ), programCode );
+        Tools.Prt( player, ChatColor.WHITE + "ZeroMsg(3): " + ChatColor.YELLOW + ZeroCubeMsg.get( 2 ), programCode );
+        Tools.Prt( player, ChatColor.GREEN + "=============================", programCode );
     }
 }

@@ -11,6 +11,10 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import com.mycompany.expcube.config.Config;
+import com.mycompany.kumaisulibraries.Utility;
+import com.mycompany.kumaisulibraries.Tools;
+import com.mycompany.kumaisulibraries.Tools.consoleMode;
+import static com.mycompany.expcube.config.Config.programCode;
 
 /**
  *
@@ -37,9 +41,10 @@ public final class CubeTool {
             MSG = String.format( "§f[EXP] %4d/%4d", ench*100, Config.MaxExp );
             lores.add( MSG );
         } else {
-            lores.add( ReplaceString( (Player)null, Config.ZeroCubeMsg.get( 1 ) ) );
-            lores.add( ReplaceString( (Player)null, Config.ZeroCubeMsg.get( 2 ) ) );
-            lores.add( ReplaceString( (Player)null, Config.ZeroCubeMsg.get( 3 ) ) );
+            for( String s : Config.ZeroCubeMsg ) {
+                Tools.Prt( Utility.ReplaceString( s ), consoleMode.max, programCode );
+                lores.add( Utility.ReplaceString( s ) );
+            }
         }
 
         ItemMeta im = item.getItemMeta();   //ItemStackから、ItemMetaを取得します。
