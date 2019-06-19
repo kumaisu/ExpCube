@@ -9,6 +9,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import com.mycompany.kumaisulibraries.Tools;
 import static com.mycompany.kumaisulibraries.Tools.consoleMode;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 設定をまとめて取り扱う構造体
@@ -20,6 +22,9 @@ public class Config {
 
     private final Plugin plugin;
     private FileConfiguration config = null;
+
+    public static int MiniExp = 100;
+    public static int MaxExp = 1000;
     
     public static boolean OnRecipe;
     public static boolean OrbMode;
@@ -31,6 +36,12 @@ public class Config {
     public static String Sneaking;
     public static long CoolTick;
     public static int CoolCount;
+
+    public static String NoPermission;
+    public static String ConfigErrorMsg;
+    public static String InsideErrorMsg;
+    public static String InventoryFullMsg;
+    public static List<String> ZeroCubeMsg;
 
     public Config( Plugin plugin ) {
         this.plugin = plugin;
@@ -65,7 +76,17 @@ public class Config {
         //  Timer 5tick×2回 = 0.5秒です
         CoolTick    = config.getLong( "CoolTick" );
         CoolCount   = config.getInt( "CoolCount" );
-       
+
+        NoPermission        = config.getString( "messages.NoPermission" );
+        ConfigErrorMsg      = config.getString( "messages.EC_ERROR" );
+        InsideErrorMsg      = config.getString( "messages.insideErr" );
+        InventoryFullMsg    = config.getString( "messages.InvFull" );
+
+        ZeroCubeMsg = new ArrayList<>();
+        ZeroCubeMsg.add( config.getString( "messages.ZeroCube1" ) );
+        ZeroCubeMsg.add( config.getString( "messages.ZeroCube2" ) );
+        ZeroCubeMsg.add( config.getString( "messages.ZeroCube3" ) );
+        
         consoleMode DebugFlag;
         try {
             DebugFlag = consoleMode.valueOf( config.getString( "Debug" ) );
@@ -94,64 +115,5 @@ public class Config {
         Tools.Prt( player, ChatColor.AQUA + "Exp Empty : " + ChatColor.WHITE + CubeEmpty, consolePrintFlag, programCode );
         Tools.Prt( player, ChatColor.AQUA + "Exp Full  : " + ChatColor.WHITE + CubeFull, consolePrintFlag, programCode );
         Tools.Prt( player, ChatColor.AQUA + "UseExpCube: " + ChatColor.WHITE + Sneaking, consolePrintFlag, programCode );
-    }
-
-    /**
-     * 
-     *
-     * @param line
-     * @return 
-     */
-    public String ZeroCubeMsg( int line ) {
-        switch ( line ) {
-            case 1:
-                return config.getString( "messages.ZeroCube1" );
-            case 2:
-                return config.getString( "messages.ZeroCube2" );
-            case 3:
-                return config.getString( "messages.ZeroCube3" );
-            default:
-                return config.getString( "messages.EC_ERROR" );
-        }
-    }
-    
-    /**
-     * パーミッションが設定されていない時のメッセージ
-     * NoPermission: "%$4貴方には権限がありません"
-     *
-     * @return 
-     */
-    public String getNoPermission() {
-        return config.getString( "messages.NoPermission" );
-    }
-    
-    /**
-     * コンフィグの指定が間違った場合のメッセージ
-     * EC_ERROR: "%$4コンフィグの指定に誤りがあります"
-     *
-     * @return 
-     */
-    public String ConfigErrorMsg() {
-        return config.getString( "messages.EC_ERROR" );
-    }
-
-    /**
-     * コンソール操作不可なものへのメッセージ
-     * insideErr: "%$4このコマンドはゲーム内から実行してください"
-     *
-     * @return 
-     */
-    public String InsideErrorMsg() {
-        return config.getString( "messages.insideErr" );
-    }
-    
-    /**
-     * プレイヤーインベントリがmaxの時のメッセージ
-     * InvFull: "%$a[ExpCube] %$4インベントリに空きがありません"
-     *
-     * @return 
-     */
-    public String InventoryFullMsg() {
-        return config.getString( "messages.InvFull" );
     }
 }
