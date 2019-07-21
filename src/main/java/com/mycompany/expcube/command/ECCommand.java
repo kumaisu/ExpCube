@@ -44,6 +44,10 @@ public class ECCommand implements CommandExecutor {
 
         Tools.Prt( "ExpCube Command", Tools.consoleMode.max, programCode );
 
+        boolean hasCubegetPerm = ( player == null ? true : player.hasPermission( "ExpCube.cubeget" ) );
+        boolean hasConsolePerm = ( player == null ? true : player.hasPermission( "ExpCube.console" ) );
+        boolean hasAdminPerm = ( player == null ? true : player.hasPermission( "ExpCube.admin" ) );
+
         if ( args.length > 0 ) {
 
             if ( args[0].equals( "cubeget" ) ) {
@@ -51,7 +55,7 @@ public class ECCommand implements CommandExecutor {
                     Tools.Prt( CubeTool.ReplaceString( player, Config.InsideErrorMsg ), programCode );
                     return false;
                 } else {
-                    if ( player.hasPermission( "ExpCube.cubeget" ) ) {
+                    if ( hasCubegetPerm ) {
                         Tools.Prt( player, ChatColor.AQUA + "[ExpCube] ExpCube 1 Get !!", Tools.consoleMode.max, programCode );
                         ItemStack is = new ItemStack( Material.QUARTZ_BLOCK, 1 );
                         player.getInventory().addItem( CubeTool.ItemToInventory( is, 0 ) );
@@ -62,50 +66,46 @@ public class ECCommand implements CommandExecutor {
                 }
             }
 
-            if ( player == null ) {
-                if ( player.hasPermission( "ExpCube.admin" ) ) {
-                    switch ( args[0] ) {
-                        case "status":
-                            Config.PrintStatus( player );
-                            return true;
-                        case "playerstatus":
-                        case "ps":
-                            ExpCalc.PlayerStatus( player );
-                            return true;
-                        default:
-                    }
-                } else {
-                    Tools.Prt( player, "You do not have permission.", programCode );
+            if ( hasAdminPerm ) {
+                switch ( args[0] ) {
+                    case "status":
+                        Config.PrintStatus( player );
+                        return true;
+                    case "playerstatus":
+                    case "ps":
+                        ExpCalc.PlayerStatus( player );
+                        return true;
+                    default:
                 }
+            } else {
+                Tools.Prt( player, "You do not have permission.", programCode );
             }
 
-            if ( player == null ) {
-                if ( player.hasPermission( "ExpCube.console" ) ) {
-                    switch ( args[0] ) {
-                        case "Reload":
-                            instance.config = new Config( instance );
-                            Tools.Prt( player, ChatColor.GREEN + "ExpCube Config Reloaded.", Tools.consoleMode.none, programCode );
-                            return true;
-                        case "Mode":
-                            Config.OrbMode = !Config.OrbMode;
-                            Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( Config.OrbMode ? "ExpOrb":"Direct" ), Tools.consoleMode.none, programCode );
-                            return true;
-                        case "Console":
-                            if ( args.length>1 ) {
-                                Tools.setDebug( args[1], programCode );
-                            } else Tools.Prt( player, "usage: ExpCube console [max,full,normal,none]", Tools.consoleMode.none, programCode );
-                            Tools.Prt( player,
-                                ChatColor.GREEN + "System Debug Mode is [ " +
-                                ChatColor.RED + Tools.consoleFlag.get( programCode ).toString() +
-                                ChatColor.GREEN + " ]",
-                                Tools.consoleMode.none, programCode
-                            );
-                            return true;
-                        default:
-                    }
-                } else {
-                    Tools.Prt( player, "You do not have permission.", programCode );
+            if ( hasConsolePerm ) {
+                switch ( args[0] ) {
+                    case "Reload":
+                        instance.config = new Config( instance );
+                        Tools.Prt( player, ChatColor.GREEN + "ExpCube Config Reloaded.", Tools.consoleMode.none, programCode );
+                        return true;
+                    case "Mode":
+                        Config.OrbMode = !Config.OrbMode;
+                        Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( Config.OrbMode ? "ExpOrb":"Direct" ), Tools.consoleMode.none, programCode );
+                        return true;
+                    case "Console":
+                        if ( args.length>1 ) {
+                            Tools.setDebug( args[1], programCode );
+                        } else Tools.Prt( player, "usage: ExpCube console [max,full,normal,none]", Tools.consoleMode.none, programCode );
+                        Tools.Prt( player,
+                            ChatColor.GREEN + "System Debug Mode is [ " +
+                            ChatColor.RED + Tools.consoleFlag.get( programCode ).toString() +
+                            ChatColor.GREEN + " ]",
+                            Tools.consoleMode.none, programCode
+                        );
+                        return true;
+                    default:
                 }
+            } else {
+                Tools.Prt( player, "You do not have permission.", programCode );
             }
         }
 
