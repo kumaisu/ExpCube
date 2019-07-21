@@ -18,8 +18,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import com.mycompany.expcube.command.ECCommand;
 import com.mycompany.expcube.config.Config;
 import com.mycompany.expcube.tool.ExpCalc;
@@ -35,37 +33,7 @@ import static com.mycompany.kumaisulibraries.Tools.consoleMode;
  */
 public class ExpCube extends JavaPlugin implements Listener {
 
-    BukkitTask task = null; //  あとで自分を止めるためのもの
     public Config config;
-    private boolean ClickFlag = false;
-
-    /**
-     * Expの出し入れの際に一定間隔のクールタイムを実行する
-     */
-    private class Timer extends BukkitRunnable{
-        int time;//秒数
-        JavaPlugin plugin;//BukkitのAPIにアクセスするためのJavaPlugin
-
-        public Timer(JavaPlugin plugin ,int i) {
-            this.time = i;
-            this.plugin = plugin;
-        }
-
-        @Override
-        public void run() {
-            if( time <= 0 ){
-                //タイムアップなら
-                ClickFlag = false;
-                plugin.getServer().getScheduler().cancelTask( task.getTaskId() ); //自分自身を止める
-            }
-            /*
-            else{
-                plugin.getServer().broadcastMessage("" + time);//残り秒数を全員に表示
-            }
-            */
-            time--; //  1秒減算
-        }
-    }
 
     /**
      * プラグイン起動時のシーケンス
@@ -114,13 +82,6 @@ public class ExpCube extends JavaPlugin implements Listener {
                 Tools.Prt( player, CubeTool.ReplaceString( player, Config.InventoryFullMsg ), consoleMode.full, programCode );
                 return;
             }
-
-            //  CoolTimer
-            //  ClickFlag が true ならクリックキャンセルだけして終わり
-            //  false なら、true にしてタイマー起動後、処理
-            if ( ClickFlag ) { return; }
-            ClickFlag = true;
-            task = this.getServer().getScheduler().runTaskTimer( this, new Timer( this , Config.CoolCount ), 0L, Config.CoolTick );
 
             player.getInventory().setItemInMainHand( null );
 

@@ -35,8 +35,6 @@ public class Config {
     public static String CubeFull;
     public static String CubeEmpty;
     public static String Sneaking;
-    public static long CoolTick;
-    public static int CoolCount;
 
     public static String NoPermission;
     public static String ConfigErrorMsg;
@@ -72,11 +70,6 @@ public class Config {
         CubeFull    = config.getString( "messages.CubeFull" );
         CubeEmpty   = config.getString( "messages.CubeEmpty" );
         Sneaking    = config.getString( "messages.Sneaking" );
-
-        //  5tick(0.25秒)ごとにTimerクラスのrunメソッドを実行してね
-        //  Timer 5tick×2回 = 0.5秒です
-        CoolTick    = config.getLong( "CoolTick" );
-        CoolCount   = config.getInt( "CoolCount" );
 
         NoPermission        = config.getString( "messages.NoPermission" );
         ConfigErrorMsg      = config.getString( "messages.EC_ERROR" );

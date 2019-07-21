@@ -117,11 +117,15 @@ public final class ExpCalc {
      * @param player
      */
     public static void PlayerStatus( Player player ) {
-        Tools.Prt( player, ChatColor.AQUA + "Player name " + ChatColor.WHITE + player.getDisplayName(), consoleMode.full, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "Level   : " + ChatColor.WHITE + player.getLevel(), consoleMode.full, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "Exp     : " + ChatColor.WHITE + player.getExp(), consoleMode.full, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "CalcExp : " + ChatColor.WHITE + convertExpPercentageToExp( player.getLevel(), player.getExp() ), consoleMode.full, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "Total   : " + ChatColor.WHITE + getNowTotalExp( player ), consoleMode.full, programCode );
-        Tools.Prt( player, ChatColor.AQUA + "G Total : " + ChatColor.WHITE + player.getTotalExperience(), consoleMode.full, programCode );
+        if ( player != null ) {
+            Tools.Prt( player, ChatColor.AQUA + "Player name " + ChatColor.WHITE + player.getDisplayName(), programCode );
+            Tools.Prt( player, ChatColor.AQUA + "Level   : " + ChatColor.WHITE + player.getLevel(), programCode );
+            Tools.Prt( player, ChatColor.AQUA + "Exp     : " + ChatColor.WHITE + player.getExp(), programCode );
+            Tools.Prt( player, ChatColor.AQUA + "CalcExp : " + ChatColor.WHITE + convertExpPercentageToExp( player.getLevel(), player.getExp() ), programCode );
+            Tools.Prt( player, ChatColor.AQUA + "Total   : " + ChatColor.WHITE + getNowTotalExp( player ), programCode );
+            Tools.Prt( player, ChatColor.AQUA + "G Total : " + ChatColor.WHITE + player.getTotalExperience(), programCode );
+        } else {
+            Tools.Prt( player, ChatColor.RED + "Use this Command ONLINE", programCode);
+        }
     }
 }

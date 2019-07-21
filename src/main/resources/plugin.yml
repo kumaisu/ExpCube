@@ -5,26 +5,21 @@ description: Exp Cube plugin
 author: Kumaisu
 database: true
 commands:
-    cubeget:
-        description: Give ExpCube Item
-        aliases: cg
-        permission: ExpCube.cubeget
-        permission-message: You do not have permission.
-        usage: /<command>
     ExpCube:
-        description: Admin Command
-        permission: ExpCube.admin
-        permission-message: You do not have permission.
-        usage: |
-            /<command> reload
-            /<command> status
-            /<command> mode
-            /<command> playerstatus/ps
-            /<command> console [full/normal/none]
+    ExpCube cubeget:
+    ExpCube status:
+    ExpCube playerstatus:
+    ExpCube Reload:
+    ExpCube Mode:
+    ExpCube Console:
 permissions:
+    ExpCube.admin:
+        description: ExpCube Admin Command
+    ExpCube.cubeget:
+        description: give ExpCube Command
+    ExpCube.console:
+        description: Remote Console Command
     ExpCube.set:
         description: Exp to Cube Motion Flag
-        default: op
     ExpCube.get:
         description: Exp from Cube Motion Flag
-        default: op
