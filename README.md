@@ -1,7 +1,7 @@
 # ExpCube
 Minecraft Plugin ExpCube Repository
 
-**Overview**
+## Overview
 
 This is a tool for storing / retrieving empirical values in blocks  
 
@@ -10,6 +10,9 @@ This is a tool for storing / retrieving empirical values in blocks
 ExpCubeとは、ブロックに経験値を保存したり取りだしたりするためのツールです  
 
 1.経験値を取りだす時に、オフハンドに修繕付きのアイテムを持っていると、修復する事ができます  
+
+## Operation check  
+Spigot Server 1.12.2 and 1.14.4  
 
 **Usage**  
 

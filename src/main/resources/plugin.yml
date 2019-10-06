@@ -1,7 +1,7 @@
 main: com.mycompany.expcube.ExpCube
 name: ExpCube
-version: 0.3
-description: Exp Cube plugin
+version: ${project.version}
+description: ${project.description}
 author: Kumaisu
 database: true
 api-version: 1.14

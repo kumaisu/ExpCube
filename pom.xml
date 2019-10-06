@@ -4,6 +4,7 @@
     <groupId>com.mycompany</groupId>
     <artifactId>ExpCube</artifactId>
     <version>0.3</version>
+    <description>Exp Cube plugin</description>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
