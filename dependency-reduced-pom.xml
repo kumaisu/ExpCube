@@ -4,6 +4,7 @@
   <groupId>com.mycompany</groupId>
   <artifactId>ExpCube</artifactId>
   <version>0.3</version>
+  <description>Exp Cube plugin</description>
   <scm>
     <connection>scm:svn:http://127.0.0.1/dummy</connection>
     <developerConnection>scm:svn:https://127.0.0.1/dummy</developerConnection>
