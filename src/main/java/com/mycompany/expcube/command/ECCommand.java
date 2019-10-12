@@ -85,21 +85,21 @@ public class ECCommand implements CommandExecutor {
                 switch ( args[0] ) {
                     case "Reload":
                         instance.config = new Config( instance );
-                        Tools.Prt( player, ChatColor.GREEN + "ExpCube Config Reloaded.", Tools.consoleMode.none, programCode );
+                        Tools.Prt( player, ChatColor.GREEN + "ExpCube Config Reloaded.", Tools.consoleMode.print, programCode );
                         return true;
                     case "Mode":
                         Config.OrbMode = !Config.OrbMode;
-                        Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( Config.OrbMode ? "ExpOrb":"Direct" ), Tools.consoleMode.none, programCode );
+                        Tools.Prt( player, ChatColor.GREEN + "Change Mode to " + ( Config.OrbMode ? "ExpOrb":"Direct" ), Tools.consoleMode.print, programCode );
                         return true;
                     case "Console":
                         if ( args.length>1 ) {
                             Tools.setDebug( args[1], programCode );
-                        } else Tools.Prt( player, "usage: ExpCube console [max,full,normal,none]", Tools.consoleMode.none, programCode );
+                        } else Tools.Prt( player, "usage: ExpCube console [max,full,normal,none]", Tools.consoleMode.print, programCode );
                         Tools.Prt( player,
                             ChatColor.GREEN + "System Debug Mode is [ " +
                             ChatColor.RED + Tools.consoleFlag.get( programCode ).toString() +
                             ChatColor.GREEN + " ]",
-                            Tools.consoleMode.none, programCode
+                            Tools.consoleMode.print, programCode
                         );
                         return true;
                     default:
