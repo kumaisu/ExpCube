@@ -1,6 +1,6 @@
 #   EXP Cube Config
 
-#   Debug ( full / Default:normal / none )
+#   Debug ( max / full / Default:normal / stop )
 Debug: normal
 
 #   Cube Recipe Switch
