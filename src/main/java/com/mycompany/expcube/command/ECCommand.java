@@ -93,8 +93,11 @@ public class ECCommand implements CommandExecutor {
                         return true;
                     case "Console":
                         if ( args.length>1 ) {
-                            Tools.setDebug( args[1], programCode );
-                        } else Tools.Prt( player, "usage: ExpCube console [max,full,normal,none]", Tools.consoleMode.print, programCode );
+                            if ( !Tools.setDebug( args[1], programCode ) ) {
+                                Tools.entryDebugFlag( programCode, Tools.consoleMode.normal );
+                                Tools.Prt( ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", programCode );
+                            }
+                        } else Tools.Prt( player, "usage: ExpCube console [max,full,normal,stop]", Tools.consoleMode.print, programCode );
                         Tools.Prt( player,
                             ChatColor.GREEN + "System Debug Mode is [ " +
                             ChatColor.RED + Tools.consoleFlag.get( programCode ).toString() +
@@ -119,7 +122,7 @@ public class ECCommand implements CommandExecutor {
         if ( ( player == null ) || player.hasPermission( "ExpCube.console" ) ) {
             Tools.Prt( player, "ExpCube Reload", programCode );
             Tools.Prt( player, "ExpCube Mode", programCode );
-            Tools.Prt( player, "ExpCube Console [max,full,normal,none]", programCode );
+            Tools.Prt( player, "ExpCube Console [max,full,normal,stop]", programCode );
         }
 
         return false;
