@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.mycompany.expcube.command.ECCommand;
+import com.mycompany.expcube.TabComplete.ExpCubeTabComp;
 import com.mycompany.expcube.config.Config;
 import com.mycompany.expcube.tool.ExpCalc;
 import com.mycompany.expcube.tool.CubeTool;
@@ -43,6 +44,7 @@ public class ExpCube extends JavaPlugin implements Listener {
         config = new Config( this );
         getServer().getPluginManager().registerEvents( this, this );
         getCommand( "expcube" ).setExecutor( new ECCommand( this ) );
+        getCommand( "expcube" ).setTabCompleter( new ExpCubeTabComp() );
 
         if ( Config.OnRecipe ) {
             this.getLogger().info( "ExpCube Recipe Enable." );

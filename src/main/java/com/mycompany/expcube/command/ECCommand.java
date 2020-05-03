@@ -71,6 +71,9 @@ public class ECCommand implements CommandExecutor {
                     case "status":
                         Config.PrintStatus( player );
                         return true;
+                    case "messages":
+                        Config.PrintMessages( player );
+                        return true;
                     case "playerstatus":
                     case "ps":
                         ExpCalc.PlayerStatus( player );

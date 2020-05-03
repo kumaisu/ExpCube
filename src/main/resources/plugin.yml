@@ -1,18 +1,13 @@
 main: com.mycompany.expcube.ExpCube
 name: ExpCube
-version: 0.3.5
+version: 0.3.6
 description: Exp Cube plugin
 author: Kumaisu
 database: true
 api-version: 1.14
 commands:
     ExpCube:
-    ExpCube cubeget:
-    ExpCube status:
-    ExpCube playerstatus:
-    ExpCube Reload:
-    ExpCube Mode:
-    ExpCube Console:
+        description: ExpCube Control Command
 permissions:
     ExpCube.admin:
         description: ExpCube Admin Command

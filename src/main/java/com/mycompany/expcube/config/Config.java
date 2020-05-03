@@ -99,6 +99,11 @@ public class Config {
             Tools.Prt( player, ChatColor.WHITE + "ExpSet: " + ChatColor.YELLOW + ( player.hasPermission( "ExpCube.set" ) ? "true":"false" ), programCode );
             Tools.Prt( player, ChatColor.WHITE + "ExpGet: " + ChatColor.YELLOW + ( player.hasPermission( "ExpCube.get" ) ? "true":"false" ), programCode );
         }
+        Tools.Prt( player, ChatColor.GREEN + "=============================", programCode );
+    }
+
+    public static void PrintMessages( Player player ) {
+        Tools.Prt( player, ChatColor.GREEN + "=== ExpCube Config Messages ===", programCode );
         Tools.Prt( player, ChatColor.WHITE + "ExpToCube : " + ChatColor.YELLOW + ExpToCube, programCode );
         Tools.Prt( player, ChatColor.WHITE + "ExpfmCube : " + ChatColor.YELLOW + ExpFromCube, programCode );
         Tools.Prt( player, ChatColor.WHITE + "ExpEnough : " + ChatColor.YELLOW + NoEnough, programCode );
