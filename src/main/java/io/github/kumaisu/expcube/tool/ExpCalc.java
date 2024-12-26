@@ -1,14 +1,14 @@
 /*
  *  Copyright (c) 2019 sugichan. All rights reserved.
  */
-package com.mycompany.expcube.tool;
+package io.github.kumaisu.expcube.tool;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import com.mycompany.kumaisulibraries.Utility;
-import com.mycompany.kumaisulibraries.Tools;
-import static com.mycompany.expcube.config.Config.programCode;
-import static com.mycompany.kumaisulibraries.Tools.consoleMode;
+import io.github.kumaisu.expcube.Lib.Utility;
+import io.github.kumaisu.expcube.Lib.Tools;
+import static io.github.kumaisu.expcube.config.Config.programCode;
+import static io.github.kumaisu.expcube.Lib.Tools.consoleMode;
 
 /**
  *

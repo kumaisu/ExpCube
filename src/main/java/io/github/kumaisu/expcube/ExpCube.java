@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) 2018 Kumaisu. All rights reserved.
  */
-package com.mycompany.expcube;
+package io.github.kumaisu.expcube;
 
 import java.util.Arrays;
 import org.bukkit.ChatColor;
@@ -18,15 +18,15 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.mycompany.expcube.command.ECCommand;
-import com.mycompany.expcube.TabComplete.ExpCubeTabComp;
-import com.mycompany.expcube.config.Config;
-import com.mycompany.expcube.tool.ExpCalc;
-import com.mycompany.expcube.tool.CubeTool;
-import com.mycompany.kumaisulibraries.Utility;
-import com.mycompany.kumaisulibraries.Tools;
-import static com.mycompany.expcube.config.Config.programCode;
-import static com.mycompany.kumaisulibraries.Tools.consoleMode;
+import io.github.kumaisu.expcube.command.ECCommand;
+import io.github.kumaisu.expcube.TabComplete.ExpCubeTabComp;
+import io.github.kumaisu.expcube.config.Config;
+import io.github.kumaisu.expcube.tool.ExpCalc;
+import io.github.kumaisu.expcube.tool.CubeTool;
+import io.github.kumaisu.expcube.Lib.Utility;
+import io.github.kumaisu.expcube.Lib.Tools;
+import static io.github.kumaisu.expcube.config.Config.programCode;
+import static io.github.kumaisu.expcube.Lib.Tools.consoleMode;
 
 /**
  *

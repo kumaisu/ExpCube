@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) 2019 sugichan. All rights reserved.
  */
-package com.mycompany.expcube.command;
+package io.github.kumaisu.expcube.command;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -10,12 +10,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import com.mycompany.expcube.ExpCube;
-import com.mycompany.expcube.config.Config;
-import com.mycompany.expcube.tool.ExpCalc;
-import com.mycompany.expcube.tool.CubeTool;
-import com.mycompany.kumaisulibraries.Tools;
-import static com.mycompany.expcube.config.Config.programCode;
+import io.github.kumaisu.expcube.ExpCube;
+import io.github.kumaisu.expcube.config.Config;
+import io.github.kumaisu.expcube.tool.ExpCalc;
+import io.github.kumaisu.expcube.tool.CubeTool;
+import io.github.kumaisu.expcube.Lib.Tools;
+import static io.github.kumaisu.expcube.config.Config.programCode;
 
 /**
  *
@@ -44,9 +44,9 @@ public class ECCommand implements CommandExecutor {
 
         Tools.Prt( "ExpCube Command", Tools.consoleMode.max, programCode );
 
-        boolean hasCubegetPerm = ( player == null ? true : player.hasPermission( "ExpCube.cubeget" ) );
-        boolean hasConsolePerm = ( player == null ? true : player.hasPermission( "ExpCube.console" ) );
-        boolean hasAdminPerm = ( player == null ? true : player.hasPermission( "ExpCube.admin" ) );
+        boolean hasCubegetPerm = (player == null || player.hasPermission("ExpCube.cubeget"));
+        boolean hasConsolePerm = (player == null || player.hasPermission("ExpCube.console"));
+        boolean hasAdminPerm = (player == null || player.hasPermission("ExpCube.admin"));
 
         if ( args.length > 0 ) {
 

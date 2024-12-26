@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.expcube.TabComplete;
+package io.github.kumaisu.expcube.TabComplete;
 
 import java.util.List;
 import java.util.ArrayList;

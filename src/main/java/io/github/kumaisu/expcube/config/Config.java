@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) 2019 sugichan. All rights reserved.
  */
-package com.mycompany.expcube.config;
+package io.github.kumaisu.expcube.config;
 
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.mycompany.kumaisulibraries.Tools;
-import static com.mycompany.kumaisulibraries.Tools.consoleMode;
+import io.github.kumaisu.expcube.Lib.Tools;
+import static io.github.kumaisu.expcube.Lib.Tools.consoleMode;
 
 /**
  * 設定をまとめて取り扱う構造体

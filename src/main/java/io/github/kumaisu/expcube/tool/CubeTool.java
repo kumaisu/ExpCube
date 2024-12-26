@@ -1,7 +1,7 @@
 /*
  *  Copyright (c) 2019 sugichan. All rights reserved.
  */
-package com.mycompany.expcube.tool;
+package io.github.kumaisu.expcube.tool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import com.mycompany.expcube.config.Config;
-import com.mycompany.kumaisulibraries.Utility;
-import com.mycompany.kumaisulibraries.Tools;
-import com.mycompany.kumaisulibraries.Tools.consoleMode;
-import static com.mycompany.expcube.config.Config.programCode;
+import io.github.kumaisu.expcube.config.Config;
+import io.github.kumaisu.expcube.Lib.Utility;
+import io.github.kumaisu.expcube.Lib.Tools;
+import io.github.kumaisu.expcube.Lib.Tools.consoleMode;
+import static io.github.kumaisu.expcube.config.Config.programCode;
 
 /**
  *
