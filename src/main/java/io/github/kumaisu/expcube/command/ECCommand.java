@@ -3,8 +3,10 @@
  */
 package io.github.kumaisu.expcube.command;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -50,6 +52,21 @@ public class ECCommand implements CommandExecutor {
 
         if ( args.length > 0 ) {
 
+            if ( args[0].equals( "cubegive" ) ) {
+                if ( player == null ) {
+                    if ( args.length > 1 ) {
+                        Tools.Prt("Exp Cube Give for " + args[1], programCode );
+                        return ( GiveExpCube( args[1] ) );
+                    } else {
+                        Tools.Prt( player, CubeTool.ReplaceString( player, Config.SpecifyPlayer ), programCode );
+                        return false;
+                    }
+                } else {
+                    Tools.Prt( player, CubeTool.ReplaceString( player, Config.OutsideErrorMsg ), programCode );
+                    return false;
+                }
+
+            }
             if ( args[0].equals( "cubeget" ) ) {
                 if ( player == null ) {
                     Tools.Prt( CubeTool.ReplaceString( player, Config.InsideErrorMsg ), programCode );
@@ -61,7 +78,7 @@ public class ECCommand implements CommandExecutor {
                         player.getInventory().addItem( CubeTool.ItemToInventory( is, 0 ) );
                         return true;
                     } else {
-                        Tools.Prt( player, "You do not have permission.", programCode );
+                        Tools.Prt( player, CubeTool.ReplaceString( player, Config.noPermission ), programCode );
                     }
                 }
             }
@@ -81,7 +98,7 @@ public class ECCommand implements CommandExecutor {
                     default:
                 }
             } else {
-                Tools.Prt( player, "You do not have permission.", programCode );
+                Tools.Prt( player, CubeTool.ReplaceString( player, Config.noPermission ), programCode );
             }
 
             if ( hasConsolePerm ) {
@@ -98,7 +115,7 @@ public class ECCommand implements CommandExecutor {
                         if ( args.length>1 ) {
                             if ( !Tools.setDebug( args[1], programCode ) ) {
                                 Tools.entryDebugFlag( programCode, Tools.consoleMode.normal );
-                                Tools.Prt( ChatColor.RED + "Config Debugモードの指定値が不正なので、normal設定にしました", programCode );
+                                Tools.Prt( ChatColor.RED + "The Config Debug mode setting is invalid, so it has been set to normal.", programCode );
                             }
                         } else Tools.Prt( player, "usage: ExpCube console [max,full,normal,stop]", Tools.consoleMode.print, programCode );
                         Tools.Prt( player,
@@ -111,7 +128,7 @@ public class ECCommand implements CommandExecutor {
                     default:
                 }
             } else {
-                Tools.Prt( player, "You do not have permission.", programCode );
+                Tools.Prt( player, CubeTool.ReplaceString( player, Config.noPermission ), programCode );
             }
         }
 
@@ -130,4 +147,27 @@ public class ECCommand implements CommandExecutor {
 
         return false;
     }
+
+    /**
+     * PlayerにExpCubeを渡す
+     *
+     * @param targetPlayerName
+     * @return
+     */
+    private boolean GiveExpCube( String targetPlayerName ) {
+        Player givePlayer = Bukkit.getServer().getPlayer( targetPlayerName );
+        boolean retStat;
+
+        if ( givePlayer == null ) {
+            Tools.Prt( "Player does not exist", programCode );
+            retStat = false;
+        } else {
+            Tools.Prt( givePlayer, ChatColor.AQUA + "[ExpCube] One ExpCube has been given !!", Tools.consoleMode.max, programCode );
+            ItemStack is = new ItemStack( Material.QUARTZ_BLOCK, 1 );
+            givePlayer.getInventory().addItem( CubeTool.ItemToInventory( is, 0 ) );
+            retStat = true;
+        }
+        return retStat;
+    }
+
 }

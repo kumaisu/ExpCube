@@ -39,7 +39,10 @@ public class Config {
     public static String NoPermission;
     public static String ConfigErrorMsg;
     public static String InsideErrorMsg;
+    public static String OutsideErrorMsg;
     public static String InventoryFullMsg;
+    public static String SpecifyPlayer;
+    public static String noPermission;
     public static List<String> ZeroCubeMsg = new ArrayList<>();
 
     public Config( Plugin plugin ) {
@@ -74,7 +77,10 @@ public class Config {
         NoPermission        = config.getString( "messages.NoPermission" );
         ConfigErrorMsg      = config.getString( "messages.EC_ERROR" );
         InsideErrorMsg      = config.getString( "messages.insideErr" );
+        OutsideErrorMsg     = config.getString( "messages.outsideErr" );
         InventoryFullMsg    = config.getString( "messages.InvFull" );
+        SpecifyPlayer       = config.getString( "messages.specifyPlayer" );
+        noPermission        = config.getString( "messages.noPermission" );
 
         ZeroCubeMsg = new ArrayList<>( Arrays.asList(
             config.getString( "messages.ZeroCube1" ),

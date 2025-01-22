@@ -27,6 +27,9 @@ messages:
   Sneaking: "%$a[ExpCube] %$eスニークしながら使って下さい"
   NoPermission: "%$4貴方には権限がありません"
   insideErr: "%$4このコマンドはゲーム内から実行してください"
+  outsideErr: "%$4コンソールでしか実行できません"
+  specifyPlayer: "%$4プレイヤーを指定してください"
+  noPermission: "%$4実行権限がありません"
 #  EC_ERROR: "%$4ExpCube Config Error"
 #  InvFull: "%$a[ExpCube] %$4There is no space in the inventory"
 #  ExpToCube: "%$a[ExpCube] %$bExp to Cube at 100.(%minExp%/%maxExp%)"
@@ -40,4 +43,6 @@ messages:
 #  ZeroCube2: "%$bRight click%$f to save"
 #  ZeroCube3: "%$fRemove by %$bleft click"
 #  insideErr: "%$4Please execute this command from inside the game."
-  
+#  outsideErr: "%$4Only available on console"
+#  specifyPlayer: "%$4Please specify a player"
+#  noPermission: "%$4You do not have permission"

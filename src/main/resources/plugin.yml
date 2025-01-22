@@ -1,5 +1,5 @@
 name: ExpCube
-version: 0.4.0
+version: 0.4.1
 main: io.github.kumaisu.expcube.ExpCube
 api-version: '1.21'
 description: Exp Cube plugin
@@ -12,7 +12,7 @@ permissions:
     ExpCube.admin:
         description: ExpCube Admin Command
     ExpCube.cubeget:
-        description: give ExpCube Command
+        description: Get ExpCube self　Command
     ExpCube.console:
         description: Remote Console Command
     ExpCube.set:

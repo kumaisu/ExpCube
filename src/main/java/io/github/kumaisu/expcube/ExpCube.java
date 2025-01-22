@@ -87,7 +87,7 @@ public class ExpCube extends JavaPlugin implements Listener {
 
             player.getInventory().setItemInMainHand( null );
 
-            int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION_ENVIRONMENTAL );
+            int ench = item.getItemMeta().getEnchantLevel( Enchantment.PROTECTION );
 
             if ( Tools.isDebugFlag( consoleMode.full, programCode ) ) {
                 Tools.Prt(

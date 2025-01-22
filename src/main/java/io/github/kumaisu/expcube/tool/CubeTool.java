@@ -53,7 +53,7 @@ public final class CubeTool {
         im.addItemFlags( ItemFlag.HIDE_ENCHANTS );
         item.setItemMeta(im);               //元のItemStackに、変更したItemMetaを設定します。
 
-        item.addUnsafeEnchantment( Enchantment.PROTECTION_ENVIRONMENTAL, ench );
+        item.addUnsafeEnchantment( Enchantment.PROTECTION, ench );
 
         return item;
     }
